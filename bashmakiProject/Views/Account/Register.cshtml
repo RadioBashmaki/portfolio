@@ -1,0 +1,85 @@
+﻿@model bashmakiProject.Models.RegisterRequest
+
+@{
+    ViewData["Title"] = "Регистрация";
+}
+
+
+<div class="form-container">
+    <form class="register-form" method="post" asp-action="Register">
+        <div class="form-step form-step-active">
+            <div class="step-counter">
+                Шаг 1 из 2
+            </div>
+            <h4 class="form-title">
+                Создайте учётную запись
+            </h4>
+            <hr class="form-divider">
+            <div class="form-offer">
+                <span class="form-offer__text">
+                    Уже есть учётная запись?
+                </span>
+                <a class="form-offer__link" asp-action="Auth">
+                    Вход
+                </a>
+            </div>
+            <div class="role-radio register-form__role-radio-cont">
+                <div class="register-form__custom-radio-cont">
+                    <input class="custom-radio" type="radio" asp-for="Role" id="student" value="@Role.Student">
+                    <label for="student">Студент</label>
+                </div>
+                <div class="register-form__custom-radio-cont">
+                    <input type="radio" class="custom-radio" asp-for="Role" id="representative" value="@Role.Representative">
+                    <label for="representative">Представитель</label>
+                </div>
+                <span class="m-0 d-block" asp-validation-for="Role"></span>
+            </div>
+            <label class="d-none" for="reg-email"></label>
+            <input class="form-control register-form__email" placeholder="Эл. Почта" type="email" asp-for="Email" id="reg-email">
+            <span class="m-0 d-block" asp-validation-for="Email"></span>
+            <label class="d-none" for="reg-password"></label>
+            <input class="form-control register-form__password" placeholder="Пароль" type="password" asp-for="Password" id="reg-password">
+            <span class="m-0 d-block" asp-validation-for="Password"></span>
+            <label class="d-none" asp-for="PasswordConfirm"></label>
+            <input class="form-control register-form__password" placeholder="Повторите пароль" type="password" asp-for="PasswordConfirm">
+            <span class="m-0 d-block" asp-validation-for="PasswordConfirm"></span>
+            <div class="d-flex justify-content-end">
+                <button type="button" class="button register-form__continue btn-next">Продолжить</button>
+            </div>
+        </div>
+        <div class="form-step">
+            <span class="back-button btn-prev"></span>
+            <div class="step-counter m-top-back-btn">
+                Шаг 2 из 2
+            </div>
+            <h4 class="form-title">
+                Заполните личные данные
+            </h4>
+            <hr class="form-divider">
+            <label class="d-none" asp-for="Name"></label>
+            <input class="form-control register-form__name" asp-for="Name" placeholder="Имя">
+            <label class="d-none" asp-for="Surname"></label>
+            <input class="form-control register-form__surname" asp-for="Surname" placeholder="Фамилия">
+            <div class="d-none register-form__company-cont">
+                <label class="d-none" asp-for="Company"></label>
+                <input class="form-control register-form__company" asp-for="Company" placeholder="Компания">
+            </div>
+            <div class="register-form__date-of-birth-cont">
+                <p class="form-offer__text mb-0">Дата рождения</p>
+                <label asp-for="DateOfBirth" class="d-none"></label>
+                <input type="date" class="form-control register-form__date-of-birth" asp-for="DateOfBirth">
+            </div>
+            <div class="role-radio register-form__sex-radio-cont">
+                <div class="d-inline-block me-5">Пол</div>
+                <input class="custom-radio" type="radio" asp-for="Gender" id="male" value="@Gender.Male">
+                <label for="male">Мужской</label>
+                <input type="radio" class="custom-radio" asp-for="Gender" id="female" value="@Gender.Female">
+                <label for="female">Женский</label>
+            </div>
+            <div class="d-flex justify-content-between register-form__buttons-cont">
+                <button class="button register-form__skip-personal">Позже</button>
+                <button class="button register-form__submit">Готово</button>
+            </div>
+        </div>
+    </form>
+</div>

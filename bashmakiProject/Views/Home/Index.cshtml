@@ -1,0 +1,10 @@
+﻿@using System.Security.Claims
+@{
+    ViewData["Title"] = "Главная страница";
+}
+
+<p>Пользователь авторизован: @ViewBag.User.Identity.IsAuthenticated</p>
+@if (ViewBag.User.Identity.IsAuthenticated)
+{
+    <p>Email: @ViewBag.User.FindFirst(ClaimTypes.Email).Value;</p>
+}

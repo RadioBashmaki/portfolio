@@ -1,0 +1,20 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="bg auth-page-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-12 min-vh-100 d-flex align-items-center">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script src="~/js/account/formSwitch.js" asp-append-version="true"></script>
+    <script src="~/js/account/roleSaver.js" asp-append-version="true"></script>
+}

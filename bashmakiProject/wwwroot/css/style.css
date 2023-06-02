@@ -1,0 +1,260 @@
+/* defaults */
+
+.bg{
+  width: 100vw;
+  min-height: 100vh;
+}
+
+body{
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  color: #898989
+}
+
+.form-container{
+  width: 100%;
+  background: white;
+  border-radius: 10px;
+}
+
+.form-control:focus{
+  box-shadow: none;
+  border: 3px solid rgba(204, 204, 204, 0.81);
+}
+
+.form-control{
+  border: 3px solid rgba(204, 204, 204, 0.81);
+  border-radius: 6px;
+}
+
+.form-title{
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 39px;
+  color: #494949;
+}
+
+.form-divider{
+  border: 3px solid #999999;
+  margin-bottom: 19px;
+}
+
+.form-offer{
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+}
+
+.form-offer__text{
+  color: #898989;
+}
+
+.form-offer__link{
+  color: #14DEAE;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.custom-radio {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+
+.field-validation-error{
+  color: #ff0000;
+  font-size: 13px;
+}
+
+.custom-radio+label {
+  display: inline-flex;
+  align-items: center;
+  user-select: none;
+}
+
+.custom-radio+label::before {
+  content: '';
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  flex-grow: 0;
+  border: 1px solid #BAB4B4;
+  border-radius: 50%;
+  margin-right: 0.5em;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 50% 50%;
+}
+
+.custom-radio:checked+label::before {
+  background-image: url("../img/svg/radio-flag.svg")
+}
+
+.custom-radio:disabled+label::before {
+  background-color: #e9ecef;
+}
+
+.button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #14DEAE;
+  border: none;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+}
+
+.button:hover{
+  opacity: .8;
+}
+
+.back-button{
+  width: 35px;
+  height: 35px;
+  display: inline-block;
+  background: url("../img/svg/back-icon.svg") no-repeat center;
+  background-size: cover;
+  cursor: pointer;
+  position: absolute;
+  margin-left: -30px;
+  margin-top: -55px;
+}
+
+.m-top-back-btn{
+  margin-top: 30px;
+}
+
+.form-control::placeholder{
+  color: #898989;
+}
+
+/* auth form */
+
+.auth-form{
+  min-height: 52vh;
+  padding: 42px 35px;
+}
+
+.auth-form__email, .register-form__email, .register-form__name{
+  height: 55px;
+  margin-top: 27px;
+}
+
+.auth-form__password, .register-form__password, .register-form__surname, .register-form__company{
+  margin-top: 25px;
+  height: 55px;
+}
+
+.auth-form__buttons-cont{
+  margin-top: 39px;
+}
+
+.auth-form__submit{
+  border-radius: 25px;
+  height: 50px;
+  width: 124px;
+}
+
+/* register form */
+
+.register-form{
+  min-height: 67vh;
+  padding: 37px 42px;
+}
+
+.form-step{
+  display: none;
+}
+
+.form-step.form-step-active{
+  display: block;
+  animation: form-show .5s;
+  transform-origin: center;
+}
+
+@keyframes form-show {
+  from{
+    transform: scale(0, 0);
+    opacity: 0
+  }
+  to{
+    transform: scale(1, 1);
+    opacity: 1
+  }
+}
+
+.step-counter{
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  color: #898989;
+}
+
+.register-form__role-radio-cont{
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 27px;
+}
+
+.register-form__email {
+  margin-top: 17px;
+}
+
+.register-form__continue{
+  width: 206px;
+  height: 50px;
+  border-radius: 25px;
+  margin-top: 28px;
+}
+
+.register-form__date-of-birth{
+  height: 55px;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  color: #999999;
+  margin-top: 12px;
+}
+
+.register-form__date-of-birth-cont{
+  margin-top: 17px;
+}
+
+.register-form__sex-radio-cont{
+  margin-top: 12px;
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.register-form__buttons-cont{
+  margin-top: 22px;
+}
+
+.register-form__submit{
+  height: 50px;
+  border-radius: 25px;
+  width: 145px;
+}
+
+.register-form__skip-personal{
+  height: 50px;
+  border-radius: 25px;
+  width: 145px;
+  color: #999999;
+  background: none;
+  text-decoration-line: underline;
+  text-underline: #999999;
+}
+
+
+
+

@@ -1,0 +1,31 @@
+﻿@model bashmakiProject.Models.AuthRequest
+
+@{
+    ViewData["Title"] = "Регистрация";
+}
+
+<div class="form-container">
+    <form class="auth-form" method="post" asp-action="Auth" asp-route-returnUrl="@ViewData["returnUrl"]">
+        <h4 class="form-title">
+            Войдите в учётную запись
+        </h4>
+        <hr class="form-divider">
+        <div class="form-offer">
+            <span class="form-offer__text">
+                Нет учётной записи?
+            </span>
+            <a class="form-offer__link" asp-action="Register">
+                Зарегистрируйтесь
+            </a>
+        </div>
+        <label class="d-none" for="auth-email"></label>
+        <input class="form-control auth-form__email" placeholder="Эл. Почта" type="email" asp-for="Email" id="auth-email">
+        <span class="d-block m-0" asp-validation-for="Email"></span>
+        <label class="d-none" for="auth-password"></label>
+        <input class="form-control auth-form__password" placeholder="Пароль" type="password" asp-for="Password" id="auth-password">
+        <span class="d-block m-0" asp-validation-for="Password"></span>
+        <div class="d-flex justify-content-end auth-form__buttons-cont">
+            <button class="button auth-form__submit">Войти</button>
+        </div>
+    </form>
+</div>
