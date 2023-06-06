@@ -1,8 +1,10 @@
 /* defaults */
 
 .bg{
-  width: 100vw;
+  min-width: 100vh;
+  width: 100%;
   min-height: 100vh;
+  height: 100%
 }
 
 body{
@@ -107,6 +109,7 @@ body{
   color: white;
   text-align: center;
   cursor: pointer;
+  font-weight: 700;
 }
 
 .button:hover{
@@ -131,6 +134,48 @@ body{
 
 .form-control::placeholder{
   color: #898989;
+}
+
+header{
+  width: 100%;
+  position: fixed;
+  top: 0;
+  background: #4B4A7F;
+  box-shadow: 0 4px 3px 0 rgba(0, 0, 0, 0.25);
+}
+
+.header-container{
+  height: 65px;
+}
+
+.header-vertical-line{
+  border-left: thick solid #999999;
+  border-left-width: 2px;
+  height: 50px;
+}
+
+.header-enter-button{
+  text-decoration: none;
+  color: #FFFFFF;
+  width: 119px;
+  height: 37px;
+  border: 3px solid #FFFFFF;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+main{
+  margin-top: 65px;
+}
+
+/* auth/register page defaults */
+
+.bg.auth-page-bg{
+  background-size: cover;
+  background: url("../img/svg/bg.svg") no-repeat fixed center;
+  background-size: cover;
 }
 
 /* auth form */
