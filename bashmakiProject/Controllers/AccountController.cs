@@ -5,8 +5,10 @@ using bashmakiProject.Models;
 using bashmakiProject.mongodb;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 
 namespace bashmakiProject.Controllers;
 
@@ -31,6 +33,7 @@ public class AccountController : Controller
                 ModelState.ClearValidationState(field);
             return View();
         }
+
         var collection = _repository.GetCollection<User>();
         var user = await collection.Find(u => u.Email == authRequest.Email).SingleOrDefaultAsync();
         if (user == null || !MatchPasswordHash(authRequest.Password, user.Password, user.PasswordKey))
@@ -40,12 +43,12 @@ public class AccountController : Controller
         }
 
         await AuthorizeUser(user);
-        
+
         if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
             return LocalRedirect(returnUrl);
         return RedirectToAction("Index", "Home");
     }
-    
+
 
     [AcceptVerbs("GET", "POST")]
     [Route("register")]
@@ -58,6 +61,7 @@ public class AccountController : Controller
                 ModelState.ClearValidationState(field);
             return View();
         }
+
         if (await UserExists(registerRequest.Email))
             ModelState.AddModelError("Email", $"e-mail {registerRequest.Email} уже используется");
         if (!ModelState.IsValid)
@@ -77,16 +81,19 @@ public class AccountController : Controller
             Password = passwordHash,
             PasswordKey = passwordKey,
             Role = registerRequest.Role,
-            Name = registerRequest.Name,
-            Surname = registerRequest.Surname,
-            DateOfBirth = registerRequest.DateOfBirth,
-            Gender = registerRequest.Gender,
-            Company = registerRequest.Company
+            PersonalData = new PersonalData
+            {
+                Name = registerRequest.Name,
+                Surname = registerRequest.Surname,
+                DateOfBirth = registerRequest.DateOfBirth,
+                Gender = registerRequest.Gender,
+                Company = registerRequest.Company
+            }
         };
 
         await _repository.GetCollection<User>().InsertOneAsync(user);
         await AuthorizeUser(user);
-        
+
         return RedirectToAction("Index", "Home");
     }
 
@@ -131,7 +138,7 @@ public class AccountController : Controller
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity),
             properties);
     }
-    
+
     [AcceptVerbs("GET")]
     [Route("logout")]
     [Route("[controller]/logout")]
@@ -141,5 +148,62 @@ public class AccountController : Controller
             CookieAuthenticationDefaults.AuthenticationScheme);
 
         return RedirectToAction("Index", "Home");
+    }
+
+    [Authorize]
+    [AcceptVerbs("GET", "POST")]
+    [Route("profile")]
+    [Route("[controller]/profile")]
+    public async Task<IActionResult> Profile([FromForm] PersonalData personalData)
+    {
+        var collection = _repository.GetCollection<User>();
+        var mail = User.FindFirstValue(ClaimTypes.Email);
+        var filter = Builders<User>.Filter
+            .Eq(u => u.Email, mail);
+        var user = await collection
+            .Find(filter)
+            .FirstOrDefaultAsync();
+        
+        if (Request.Method == "GET")
+            return View(user.PersonalData);
+
+        personalData.Avatar = user.PersonalData.Avatar;
+        var avatar = Request.Form.Files.FirstOrDefault();
+        if (avatar != null)
+        {
+            using var ms = new MemoryStream();
+            await avatar.OpenReadStream().CopyToAsync(ms);
+            personalData.Avatar = ms.ToArray();
+        }
+
+        var update = Builders<User>.Update
+            .Set(u => u.PersonalData, personalData);
+        var res = await collection.UpdateOneAsync(filter, update);
+        ViewData["dataSaved"] = res.IsAcknowledged;
+
+        return View(personalData);
+    }
+
+    [AcceptVerbs("GET")]
+    [Route("[controller]/avatar")]
+    public async Task<IActionResult> GetUsersAvatar()
+    {
+        var user = await GetCurrentUser();
+        if (user.PersonalData.Avatar == null)
+            return NotFound();
+        return File(user.PersonalData.Avatar, "image/png");
+    }
+
+    [NonAction]
+    private async Task<User> GetCurrentUser()
+    {
+        var collection = _repository.GetCollection<User>();
+        var mail = User.FindFirstValue(ClaimTypes.Email);
+        var filter = Builders<User>.Filter
+            .Eq(u => u.Email, mail);
+        var user = await collection
+            .Find(filter)
+            .FirstOrDefaultAsync();
+        return user;
     }
 }

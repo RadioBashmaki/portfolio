@@ -1,0 +1,162 @@
+﻿@model PersonalData
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var dataSaved = ViewData["dataSaved"];
+}
+
+<div class="bg auth-page-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2 col-12">
+                <div class="form-container profile-form-container">
+                    <form class="profile-form" method="post" asp-action="Profile" enctype="multipart/form-data">
+                        <h4 class="profile-form__title primary-text">Профиль</h4>
+                        <hr class="form-divider">
+                        @if (dataSaved != null)
+                        {
+                            if ((bool)dataSaved)
+                            {
+                                <div class="alert alert-success m-0">Данные сохранены.</div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-danger m-0">Данные не сохранены.</div>
+                            }
+                        }
+                        <div class="profile-form__fields-container">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="row profile-form__field">
+                                            <div class="col-3 d-flex justify-content-md-end justify-content-start align-items-center">
+                                                <label class="profile-form__label" asp-for="Name">Имя</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                <input class="form-control" type="text" asp-for="Name">
+                                                <span asp-validation-for="Name"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row profile-form__field">
+                                            <div class="col-3 d-flex justify-content-md-end justify-content-start align-items-center">
+                                                <label class="profile-form__label" asp-for="Surname">Фамилия</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                <input class="form-control" type="text" asp-for="Surname">
+                                                <span asp-validation-for="Surname"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row profile-form__field">
+                                            <div class="col-3 d-flex justify-content-md-end justify-content-start align-items-center">
+                                                <span class="profile-form__label">Пол</span>
+                                            </div>
+                                            <div class="col-12 col-md-9 d-flex justify-content-evenly align-items-center flex-wrap">
+                                                <input class="custom-radio" type="radio" asp-for="Gender" id="male" value="@Gender.Male">
+                                                <label for="male">Мужской</label>
+                                                <input class="custom-radio" type="radio" asp-for="Gender" id="female" value="@Gender.Female">
+                                                <label for="female">Женский</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 d-flex justify-content-center align-items-center">
+                                        <div class="profile-form__avatar-container">
+                                            <img src="@Url.Action("GetUsersAvatar", "Account")" class="profile-form__avatar-viewer" alt>
+                                            <input accept="images/jpg, images/png" type="file" class="profile-form__avatar-input d-none" asp-for="Avatar">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row profile-form__field">
+                                    <div class="col-3 d-flex justify-content-md-end justify-content-start align-items-center">
+                                        <label class="profile-form__label" asp-for="Company">Компания</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input class="form-control" type="text" asp-for="Company">
+                                        <span asp-validation-for="Company"></span>
+                                    </div>
+                                </div>
+                                <div class="row profile-form__field">
+                                    <div class="col-3 d-flex justify-content-md-end justify-content-start align-items-center">
+                                        <label class="profile-form__label" asp-for="DateOfBirth">Дата рождения</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input class="form-control" type="date" asp-for="DateOfBirth">
+                                    </div>
+                                </div>
+                                <div class="row profile-form__field">
+                                    <div class="col-3 d-flex justify-content-md-end justify-content-start align-items-center">
+                                        <label class="profile-form__label" asp-for="City">Город</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input class="form-control" type="text" asp-for="City">
+                                        <span asp-validation-for="City"></span>
+                                    </div>
+                                </div>
+                                <div class="row profile-form__field">
+                                    <div class="col-3 d-flex justify-content-md-end justify-content-start align-items-center">
+                                        <label class="profile-form__label" asp-for="Career">Профессия</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input class="form-control" type="text" asp-for="Career">
+                                        <span asp-validation-for="Career"></span>
+                                    </div>
+                                </div>
+                                <div class="row profile-form__field">
+                                    <div class="col-12 col-md-9 offset-3">
+                                        <h6 class="primary-text profile-form__additional-links">Дополнительные ссылки</h6>
+                                    </div>
+                                </div>
+                                <div class="row profile-form__field">
+                                    <div class="col-3 d-flex justify-content-md-end justify-content-start align-items-center">
+                                        <label class="profile-form__label" asp-for="Links.Vk">ВКонтакте</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input class="form-control" type="text" asp-for="Links.Vk">
+                                        <span asp-validation-for="Links.Vk"></span>
+                                    </div>
+                                </div>
+                                <div class="row profile-form__field">
+                                    <div class="col-3 d-flex justify-content-md-end justify-content-start align-items-center">
+                                        <label class="profile-form__label" asp-for="Links.Telegram">Telegram</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input class="form-control" type="text" asp-for="Links.Telegram">
+                                        <span asp-validation-for="Links.Telegram"></span>
+                                    </div>
+                                </div>
+                                <div class="row profile-form__field">
+                                    <div class="col-3 d-flex justify-content-md-end justify-content-start align-items-center">
+                                        <label class="profile-form__label" asp-for="Links.Discord">Discord</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input class="form-control" type="text" asp-for="Links.Discord">
+                                        <span asp-validation-for="Links.Discord"></span>
+                                    </div>
+                                </div>
+                                <div class="row profile-form__field">
+                                    <div class="col-3 d-flex justify-content-md-end justify-content-start align-items-center">
+                                        <label class="profile-form__label" asp-for="Links.Github">GitHub</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input class="form-control" type="text" asp-for="Links.Github">
+                                        <span asp-validation-for="Links.Github"></span>
+                                    </div>
+                                </div>
+                                <div class="profile-form__field">
+                                    <label class="profile-form__label" asp-for="About">О Себе</label>
+                                    <textarea class="form-control profile-form__about" asp-for="About"></textarea>
+                                    <span asp-validation-for="About"></span>
+                                </div>
+                                <button class="button profile-form__submit-btn">Сохранить</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script src="~/js/account/avatarViewer.js" asp-append-version="true"></script>
+}

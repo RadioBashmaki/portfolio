@@ -8,11 +8,12 @@
 
     <ItemGroup>
       <Folder Include="html" />
-      <Folder Include="wwwroot\img" />
+      <Folder Include="wwwroot\img\png" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="MongoDB.Driver" Version="2.19.2" />
+      <PackageReference Include="MongoDB.Driver.GridFS" Version="2.19.2" />
     </ItemGroup>
 
     <ItemGroup>
