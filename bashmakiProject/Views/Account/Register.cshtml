@@ -58,11 +58,14 @@
             <hr class="form-divider">
             <label class="d-none" asp-for="Name"></label>
             <input class="form-control register-form__name" asp-for="Name" placeholder="Имя">
+            <span class="m-0 d-block" asp-validation-for="Name"></span>
             <label class="d-none" asp-for="Surname"></label>
             <input class="form-control register-form__surname" asp-for="Surname" placeholder="Фамилия">
+            <span class="m-0 d-block" asp-validation-for="Surname"></span>
             <div class="d-none register-form__company-cont">
                 <label class="d-none" asp-for="Company"></label>
                 <input class="form-control register-form__company" asp-for="Company" placeholder="Компания">
+                <span class="m-0 d-block" asp-validation-for="Company"></span>
             </div>
             <div class="register-form__date-of-birth-cont">
                 <p class="form-offer__text mb-0">Дата рождения</p>

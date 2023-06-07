@@ -32,10 +32,12 @@ public class RegisterRequest{
     [StringLength(20, MinimumLength = 8, ErrorMessage = "Длина пароля должна быть от 8 до 20 символов")]
     [Compare("Password", ErrorMessage = "Пароли не совпадают")]
     public string PasswordConfirm { get; set; }
-
+    [StringLength(50, ErrorMessage = "Слишком длинная строка")]
     public string? Name { get; set; }
+    [StringLength(50, ErrorMessage = "Слишком длинная строка")]
     public string? Surname { get; set; }
     public DateTime? DateOfBirth { get; set; }
     public Gender? Gender { get; set; }
+    [StringLength(50, ErrorMessage = "Слишком длинная строка")]
     public string? Company { get; set; }
 }

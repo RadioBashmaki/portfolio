@@ -29,6 +29,7 @@ body{
 .form-control{
   border: 3px solid rgba(204, 204, 204, 0.81);
   border-radius: 6px;
+  height: 55px;
 }
 
 .form-title{
@@ -39,8 +40,9 @@ body{
 }
 
 .form-divider{
-  border: 3px solid #999999;
+  border: 3px solid #494949;
   margin-bottom: 19px;
+  box-shadow: 0 4px 3px 0 rgba(0, 0, 0, .25);
 }
 
 .form-offer{
@@ -186,13 +188,11 @@ main{
 }
 
 .auth-form__email, .register-form__email, .register-form__name{
-  height: 55px;
   margin-top: 27px;
 }
 
 .auth-form__password, .register-form__password, .register-form__surname, .register-form__company{
   margin-top: 25px;
-  height: 55px;
 }
 
 .auth-form__buttons-cont{
@@ -260,7 +260,6 @@ main{
 }
 
 .register-form__date-of-birth{
-  height: 55px;
   font-weight: 400;
   font-size: 20px;
   line-height: 24px;
