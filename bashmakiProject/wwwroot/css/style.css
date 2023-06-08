@@ -2,9 +2,7 @@
 
 .bg{
   min-width: 100vh;
-  width: 100%;
-  min-height: 100vh;
-  height: 100%
+  min-height: calc(100vh - 65px);
 }
 
 body{
@@ -13,6 +11,10 @@ body{
   font-size: 16px;
   line-height: 19px;
   color: #898989
+}
+
+main{
+  margin-top: 65px;
 }
 
 .form-container{
@@ -169,10 +171,6 @@ header{
   justify-content: center;
 }
 
-main{
-  margin-top: 65px;
-}
-
 .primary-text{
   color: #494949;
 }
@@ -180,7 +178,6 @@ main{
 /* auth/register page defaults */
 
 .bg.auth-page-bg{
-  background-size: cover;
   background: url("../img/svg/bg.svg") no-repeat fixed center;
   background-size: cover;
 }
@@ -188,7 +185,6 @@ main{
 /* auth form */
 
 .auth-form{
-  min-height: 52vh;
   padding: 42px 35px;
 }
 
@@ -213,7 +209,6 @@ main{
 /* register form */
 
 .register-form{
-  min-height: 67vh;
   padding: 37px 42px;
 }
 
