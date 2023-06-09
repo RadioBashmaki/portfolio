@@ -1,0 +1,82 @@
+﻿@model CreateProjectRequest
+
+<div class="bg auth-page-bg d-flex align-items-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2 col-12">
+                <div class="form-container create-project-form-container">
+                    <form method="post" asp-controller="Projects" asp-action="NewProject" class="create-project-form" enctype="multipart/form-data">
+                        <h4 class="create-project-form__title primary-text">
+                            Создание проекта
+                        </h4>
+                        <hr class="form-divider">
+                        <div asp-validation-summary="ModelOnly"></div>
+                        <input type="text" class="form-control create-project-form__title-input w-50" asp-for="Title" placeholder="Название">
+                        <span asp-validation-for="Title"></span>
+                        <div class="create-project-form__topic-container">
+                            <div class="create-project-form__topics-label">
+                                Тематика<img src="@Url.Content("~/img/svg/plus.svg")" class="open-topic-dropdown h-100" alt/>:
+                            </div>
+                            <div class="d-flex align-items-center flex-wrap">
+                                @foreach (var topic in Enum.GetValues<Topic>())
+                                {
+                                    var desc = topic.GetDescription()!;
+                                    <div class="topic-tab d-none" style="background: @desc.HexColor">@desc.ShortName</div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="dropdown-topics-list-container">
+                            <div class="dropdown-topics">
+                                @foreach (var topic in Enum.GetValues<Topic>())
+                                {
+                                    var desc = topic.GetDescription()!;
+                                    <div class="topic-checkbox-container">
+                                        <input type="checkbox" class="topic-checkbox" asp-for="Topics[topic]">
+                                        <label asp-for="Topics[topic]" style="background: @desc.HexColor">@desc.ShortName</label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <span asp-validation-for="Topics"></span>
+                        <div class="create-project-form__description">
+                            <div class="label-icon-container d-flex align-items-center">
+                                <img src="@Url.Content("~/img/svg/attention-icon.svg")" class="label-icon" alt>
+                                <label asp-for="Description" class="description-label">Описание</label>
+                            </div>
+                            <textarea asp-for="Description" class="form-control"></textarea>
+                            <span asp-validation-for="Description"></span>
+                        </div>
+                        <div class="create-project-form__files">
+                            <div class="label-icon-container d-flex align-items-center">
+                                <img src="@Url.Content("~/img/svg/folder-icon.svg")" class="label-icon" alt>
+                                <label asp-for="FilesDescriptions">Файлы</label>
+                            </div>
+                            <div class="file-forms-container">
+                                @if (ViewData.Model != null)
+                                {
+                                    if (Model.FilesDescriptions != null)
+                                        foreach (var t in Model.FilesDescriptions.Select((d, i) => (desc: d, index: i)))
+                                        {
+                                            ViewData["index"] = t.index.ToString();
+                                            await Html.RenderPartialAsync("_ModalPartial", Model, ViewData);
+                                        }
+                                }
+                            </div>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <img src="@Url.Content("~/img/svg/plus2.svg")" class="more-files-btn" alt>
+                            </div>
+                        </div>
+
+                        <button class="button create-project-form__save-btn">Сохранить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/projects/topicTabManager.js" asp-append-version="true"></script>
+    <script src="~/js/projects/modalValidationManager.js" asp-append-version="true"></script>
+}

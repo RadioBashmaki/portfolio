@@ -22,6 +22,7 @@ var mongoRepo = new MongoDbRepository(mongoClient, mongoConfig.DatabaseName);
 builder.Services.AddSingleton<IMongoDbRepository>(mongoRepo);
 BsonSerializer.RegisterSerializer(new EnumSerializer<Role>(BsonType.String));
 BsonSerializer.RegisterSerializer(new EnumSerializer<Gender>(BsonType.String));
+BsonSerializer.RegisterSerializer(new EnumSerializer<Topic>(BsonType.String));
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(opts =>
@@ -36,6 +37,10 @@ builder.Services.AddAuthorization(opts =>
     opts.AddPolicy("OnlyForRepresentatives", policy =>
     {
         policy.RequireClaim(ClaimTypes.Role, "Representative");
+    });
+    opts.AddPolicy("OnlyForStudents", policy =>
+    {
+        policy.RequireClaim(ClaimTypes.Role, "Student");
     });
 });
 

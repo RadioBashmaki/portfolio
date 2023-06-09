@@ -1,7 +1,7 @@
 /* defaults */
 
 .bg{
-  min-width: 100vh;
+  min-width: 100%;
   min-height: calc(100vh - 65px);
 }
 
@@ -25,7 +25,7 @@ main{
 
 .form-control:focus{
   box-shadow: none;
-  border: 3px solid rgba(204, 204, 204, 0.81);
+  border: 3px solid #14DEAE;
 }
 
 .form-control{
@@ -70,9 +70,16 @@ main{
   opacity: 0;
 }
 
-.field-validation-error{
+.validation-summary-errors, .field-validation-error{
   color: #ff0000;
+}
+
+.field-validation-error{
   font-size: 13px;
+}
+
+.validation-summary-errors{
+  font-size: 16px;
 }
 
 .custom-radio+label {
@@ -303,7 +310,7 @@ header{
 /* profile form */
 
 .profile-form-container{
-  margin-top: 100px;
+  margin: 100px 0;
 }
 
 .profile-form__avatar-container{
@@ -359,6 +366,241 @@ header{
   margin-left: auto;
 }
 
+/* create-project-form styles */
+
+.create-project-form-container{
+  margin: 50px 0;
+}
+
+.create-project-form{
+  padding: 40px 30px;
+}
+
+.create-project-form__title{
+  font-size: 32px;
+  line-height: 39px;
+}
+
+.create-project-form__title-input{
+  margin-top: 28px;
+}
+
+.create-project-form__save-btn{
+  width: 168px;
+  height: 50px;
+  border-radius: 25px;
+  margin-left: auto;
+  margin-top: 40px;
+}
+
+.create-project-form__topic-container{
+  margin-top: 8px;
+}
+
+.create-project-form__topics-label, .description-label{
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  color: #676767;
+}
+
+.create-project-form__description, .create-project-form__files{
+  margin-top: 15px;
+}
+
+.label-icon{
+  margin-right: 5px;
+}
+
+.label-icon-container{
+  margin-bottom: 10px;
+}
+
+.topic-checkbox{
+  position: absolute;
+  opacity: 0;
+}
+
+.topic-checkbox + label{
+  font-size: 13px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  padding: 0 10px;
+  border-radius: 15px;
+  user-select: none;
+}
+
+.topic-checkbox:checked + label{
+  box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
+}
+
+.topic-checkbox-container{
+  margin: 5px;
+  display: inline-block;
+}
+
+.topic-tab{
+  font-size: 13px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  padding: 0 10px;
+  border-radius: 15px;
+  user-select: none;
+  margin: 5px 5px;
+}
+
+.dropdown-topics-list-container{
+  background: #f6f6f6;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.dropdown-topics-list-container{
+  display: none;
+  transform-origin: top;
+  animation: dropdown .5s;
+  box-shadow: 2px 2px 0 0 rgba(0, 0, 0, .5) inset;
+}
+
+@keyframes dropdown {
+  from{
+    transform: scale(1, 0);
+    opacity: 0
+  }
+  to{
+    transform: scale(1, 1);
+    opacity: 1
+  }
+}
+
+.dropdown-topics-list-container.active{
+  display: block;
+}
+
+.create-project-form__description>textarea{
+  height: 160px;
+}
+
+.open-topic-dropdown{
+  cursor: pointer;
+}
+
+.add-file-container{
+  margin-top: 15px;
+}
+
+.edit-file-btn{
+  position: relative;
+  user-select: none;
+  display: flex;
+  height: 40px;
+  border: 2px solid #999999;
+  border-radius: 20px;
+  color: #494949;
+  align-items: center;
+  cursor: pointer;
+  padding: 0 10px;
+}
+
+.file-forms-container{
+  counter-reset: file;
+}
+
+.edit-file-btn:before{
+  position: absolute;
+  
+  counter-increment: file;
+  color: #999999;
+  font-size: 15px;
+  content: counter(file) "."
+}
+
+.edit-file-btn__delete-button{
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  right: 10px;
+  background: url(../img/svg/cross.svg) no-repeat;
+  background-size: cover;
+}
 
 
+.more-files-btn{
+  margin-top: 10px;
+  height: 30px;
+  cursor: pointer;
+}
+
+
+.modal-container{
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, .5);
+  background-size: cover;
+  min-width: 100%;
+  min-height: 100vh;
+  align-items: center;
+}
+
+.modal-container.active{
+  display: flex;
+}
+
+.new-file-form{
+  padding: 25px 40px;
+}
+
+.new-file-form__title{
+  font-size: 32px;
+  line-height: 39px;
+  color: #494949;
+}
+
+.new-file-form__filename, .new-file-form__description, .new-file-form__file{
+  margin-top: 23px;
+}
+
+.new-file-form__file{
+  height: inherit;
+}
+
+.new-file-form__description{
+  height: 140px;
+}
+
+.new-file-form__add-btn{
+  width: 160px;
+  height: 50px;
+  border-radius: 25px;
+}
+
+.new-file-form__buttons-cont{
+  margin-top: 27px;
+}
+
+.new-file-form__close-button{
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration-line: underline;
+  color: #999999;
+  cursor: pointer;
+  margin-left: 25px;
+}
+
+.new-file-form__close-button:hover{
+  opacity: .8;
+}
 

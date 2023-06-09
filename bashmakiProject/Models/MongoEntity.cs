@@ -6,5 +6,5 @@ namespace bashmakiProject.Models;
 public class MongoEntity
 {
     [BsonRepresentation(BsonType.ObjectId)]
-    public string? Id { get; set; }
+    public string Id { get; set; }
 }
