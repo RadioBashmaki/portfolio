@@ -1,0 +1,47 @@
+﻿@model FilterProjectsRequest
+
+<div class="bg my-projects-bg d-flex align-items-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-8 col-12 offset-lg-3 offset-md-2">
+                <div class="form-container my-projects-list-container pb-5">
+                    <form id="set-filter-form" asp-action="FilterProjects" method="post">
+                        <div class="my-projects-list-container__search-panel d-flex align-items-center flex-wrap">
+                            <div class="search-icon"></div>
+                            <input type="text" asp-for="ComparisonString" class="search-input primary-text" placeholder="Поиск">
+                            <span class="topics-choice-open">Тематики</span>
+                        </div>
+                        <div class="dropdown-topics-list-container">
+                            <div class="dropdown-topics">
+                                @foreach (var topic in Enum.GetValues<Topic>())
+                                {
+                                    var desc = topic.GetDescription()!;
+                                    <div class="topic-checkbox-container">
+                                        <input type="checkbox" class="topic-checkbox" asp-for="Topics[topic]">
+                                        <label asp-for="Topics[topic]" style="background: @desc.HexColor">@desc.ShortName</label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </form>
+                    <div class="my-projects-list-container__found-panel">
+                        Найдено:<pre> </pre><span class="projects-count">@Model.Projects.Count.ToString()</span>
+                    </div>
+                    <div class="my-projects-list-container__projects-list justify-content-center">
+                        @foreach (var proj in Model.Projects)
+                        {
+                            @Html.DisplayFor(model => proj, "ProjectMyProjects")
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+
+@section Scripts{
+    <script src="~/js/projects/projectFilter.js" asp-append-version="true"></script>
+    <script src="~/js/projects/projectPinManager.js" asp-append-version="true"></script>
+}

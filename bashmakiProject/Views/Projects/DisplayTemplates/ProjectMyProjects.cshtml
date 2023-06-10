@@ -1,0 +1,19 @@
+﻿@model Project
+
+<div class="my-projects-list-container__project">
+    <div class="my-projects-list-container__project__pinned">
+        <div class="project__pinned__pinned-mark@(Model.IsPinned ? " pinned" : "")" data-project-id="@Model.Id" data-url="@Url.Action("ToggleProjectsPin")"></div>
+        <div class="project__pinned__border"></div>
+    </div>
+    <a class="my-projects-list-container__project__info d-flex flex-column justify-content-between" asp-action="EditProject" asp-controller="Projects" asp-route-id="@Model.Id" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Редактировать">
+        <div class="my-projects-list-container__project__title">@Model.Title</div>
+        <div class="my-projects-list-container__project__creation-date">Дата добавления: @Model.CreationDate.ToString("dd.MM.yyyy")</div>
+    </a>
+    <div class="my-projects-list-container__project__topics d-flex justify-content-evenly ms-auto">
+        @foreach (var topic in Model.Topics)
+        {
+            var desc = topic.GetDescription()!;
+            <span class="my-projects-list-container__project__topic-display" style="background: @desc.HexColor"></span>
+        }
+    </div>
+</div>

@@ -1,0 +1,6 @@
+﻿@model FilterProjectsRequest
+
+@foreach (var proj in Model.Projects)
+{
+    @Html.DisplayFor(model => proj, "ProjectMyProjects")
+}

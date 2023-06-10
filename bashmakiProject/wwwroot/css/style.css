@@ -182,6 +182,28 @@ header{
   color: #494949;
 }
 
+/* fancy loader */
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #FFF;
+  border-bottom-color: #FF3D00;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 /* auth/register page defaults */
 
 .bg.auth-page-bg{
@@ -602,5 +624,198 @@ header{
 
 .new-file-form__close-button:hover{
   opacity: .8;
+}
+
+/* MyProjects page styles */
+
+.bg.my-projects-bg {
+  background: url("../img/svg/bg-white.svg") no-repeat fixed center;
+  background-size: cover;
+}
+
+.my-projects-list-container{
+  margin: 50px 0;
+  min-height: 50vh;
+}
+
+.my-projects-list-container__project, .my-projects-list-container__found-panel, #set-filter-form{
+  padding: 0 15px;
+}
+
+.my-projects-list-container__search-panel{
+  height: 75px;
+}
+
+.search-icon{
+  background: url("../img/svg/search-icon.svg");
+  margin-right: 12px;
+  width: 30px;
+  aspect-ratio: 1 / 1;
+  cursor: pointer;
+}
+
+.search-input{
+  height: 24px;
+  border: none;
+  outline: none;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  font-size: 20px;
+  width: 180px;
+}
+
+.search-input:focus, .search-input:focus-visible{
+  border: none;
+  outline: none;
+}
+
+.search-input::placeholder{
+  color: #CCCCCC;
+  opacity: .8;
+  font-weight: 400;
+  font-size: 20px;
+}
+
+.my-projects-list-container__found-panel{
+  height: 35px;
+  border-top: 2px;
+  border-bottom: 2px;
+  border-style: solid none;
+  border-color: #D9D9D9;
+  display: flex;
+  align-items: center;
+  color: #999999;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+
+.my-projects-list-container__project{
+  padding-top: 15px;
+  padding-bottom: 15px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid;
+  border-color: #D9D9D9;
+}
+
+.my-projects-list-container__project__pinned{
+  display: none;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  left: -15px;
+  width: 50px;
+  height: 50px;
+}
+
+.project__pinned__pinned-mark{
+  background: url("../img/svg/pinned-icon-unpinned.svg") no-repeat center;
+  background-size: cover;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  transition: all ease-in-out .15s;
+}
+
+.project__pinned__pinned-mark.pinned{
+  background: url("../img/svg/pinned-icon-pinned.svg") no-repeat center;
+}
+
+.project__pinned__pinned-mark.disabled{
+  filter: grayscale(100%);
+  pointer-events: none;
+}
+
+.pin-success, .pin-failure{
+  width: 25px;
+  height: 25px;
+  border-radius: 20%;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.pin-success{
+  background: green;
+}
+
+.pin-failure{
+  background: red;
+}
+
+.project__pinned__pinned-mark:hover{
+  transform: scale(1.2, 1.2);
+}
+
+.project__pinned__border{
+  position: absolute;
+  right: 0;
+  border-left: 2px solid #D9D9D9;
+  width: 100%;
+  height: 100%;
+  background: white;
+}
+
+.my-projects-list-container__project:hover .my-projects-list-container__project__pinned{
+  display: flex;
+}
+
+.my-projects-list-container__project:hover .project__pinned__border{
+  animation: slide-in .3s ease-in forwards;
+}
+
+@keyframes slide-in {
+  from{
+    
+  }
+  to{
+    width: 2px;
+  }
+}
+
+.my-projects-list-container__project:hover .project__pinned__border{
+  animation: slide-in .3s ease-in forwards;
+}
+
+.my-projects-list-container__project__title{
+  font-weight: 500;
+  font-size: 16px;
+  color: #000000;
+}
+
+.my-projects-list-container__project__creation-date{
+  font-weight: 400;
+  font-size: 16px;
+  color: #898989;
+}
+
+.my-projects-list-container__project__topic-display{
+  border-radius: 50% 50%;
+  width: 12px;
+  margin: 0 2px;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+.my-projects-list-container__project__info{
+  height: 40px;
+  cursor: pointer;
+  text-decoration: none;
+  user-select: none;
+}
+
+.my-projects-list-container__project__info:visited{
+  color: inherit;
+}
+
+.topics-choice-open{
+  margin-left: auto;
+  color: #676767;
+  text-decoration: underline solid #676767 1px;
+  cursor: pointer;
+  user-select: none;
 }
 
