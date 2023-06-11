@@ -688,6 +688,7 @@ header{
   border-color: #D9D9D9;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   color: #999999;
   font-size: 14px;
   line-height: 17px;
@@ -821,6 +822,18 @@ header{
   text-underline-offset: 2px;
   cursor: pointer;
   user-select: none;
+}
+
+.add-project-link{
+  color: #4B4A7F;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+}
+
+.add-project-link.visited{
+  color: #4B4A7F;
 }
 
 /* edit project page styles */

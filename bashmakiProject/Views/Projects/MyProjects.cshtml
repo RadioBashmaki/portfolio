@@ -24,8 +24,11 @@
                             </div>
                         </div>
                     </form>
-                    <div class="my-projects-list-container__found-panel">
-                        Найдено:<pre> </pre><span class="projects-count">@Model.Projects.Count.ToString()</span>
+                    <div class="my-projects-list-container__found-panel d-flex justify-content-between">
+                        <span>
+                            Найдено:<pre class="d-inline"> </pre><span class="projects-count">@Model.Projects.Count.ToString()</span>
+                        </span>
+                        <a asp-action="NewProject" class="add-project-link">Добавить</a>
                     </div>
                     <div class="my-projects-list-container__projects-list justify-content-center">
                         @foreach (var proj in Model.Projects)
