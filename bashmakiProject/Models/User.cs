@@ -33,6 +33,8 @@ public class PersonalData
     public string? Career { get; set; }
     [StringLength(50, ErrorMessage = "Слишком длинная строка")]
     public string? Company { get; set; }
+    [StringLength(100, ErrorMessage = "Слишком длинная строка")]
+    public string? Education { get; set; }
     [StringLength(350, ErrorMessage = "Слишком длинная строка")]
     public string? About { get; set; }
     public Links Links { get; set; }

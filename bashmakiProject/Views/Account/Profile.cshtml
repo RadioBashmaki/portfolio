@@ -103,6 +103,15 @@
                                     </div>
                                 </div>
                                 <div class="row profile-form__field">
+                                    <div class="col-3 d-flex justify-content-md-end justify-content-start align-items-center">
+                                        <label class="profile-form__label" asp-for="Education">Образование</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input class="form-control" type="text" asp-for="Education">
+                                        <span asp-validation-for="Education"></span>
+                                    </div>
+                                </div>
+                                <div class="row profile-form__field">
                                     <div class="col-12 col-md-9 offset-3">
                                         <h6 class="primary-text profile-form__additional-links">Дополнительные ссылки</h6>
                                     </div>
