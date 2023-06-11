@@ -20,13 +20,6 @@ public class Project : MongoEntity
     public FileDescriptionDatabase[]? Files;
 }
 
-public class FileDescriptionDatabase
-{
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public byte[] File { get; set; }
-}
-
 public class EnumFieldDescriptionAttribute : Attribute
 {
     public readonly string Name;

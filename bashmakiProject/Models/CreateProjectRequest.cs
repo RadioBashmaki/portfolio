@@ -7,7 +7,6 @@ public class CreateProjectRequest : IValidatableObject
 {
     [Required(ErrorMessage = "Это обязательное поле")]
     public string Title { get; set; }
-    [Remote("VerifyEmail", "Project")]
     public Dictionary<Topic, bool> Topics { get; set; }
     [Required(ErrorMessage = "Это обязательное поле")]
     [StringLength(350)]

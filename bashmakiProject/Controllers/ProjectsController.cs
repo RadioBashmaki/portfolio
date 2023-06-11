@@ -58,7 +58,9 @@ public class ProjectsController : Controller
                 {
                     Name = clientFile.Name,
                     Description = clientFile.Description,
-                    File = await FormFileToByteArray(clientFile.File)
+                    File = await FormFileToByteArray(clientFile.File),
+                    ContentType = clientFile.File.ContentType,
+                    Extension = Path.GetExtension(clientFile.File.FileName)
                 });
             }
         }
