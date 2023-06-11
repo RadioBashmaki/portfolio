@@ -129,17 +129,59 @@ public class ProjectsController : Controller
     [AcceptVerbs("GET", "POST")]
     [Route("{id}/edit")]
     [Authorize(Policy = "OnlyForStudents")]
-    public async Task<IActionResult> EditProject([FromRoute] string id)
+    public async Task<IActionResult> EditProject([FromRoute] string id, [FromForm] EditProjectRequest editRequest)
     {
         var user = await GetCurrentUser();
         var projectsCollection = _repository.GetCollection<Project>();
         var filter = Builders<Project>.Filter
             .Eq(proj => proj.UserId, user.Id);
         var projects = await projectsCollection.Find(filter).ToListAsync();
-        if (!projects.Select(proj => proj.Id).Contains(id))
-            return Forbid();
+        var currentProj = projects?.SingleOrDefault(proj => proj.Id == id);
+        if (currentProj == null)
+            return NotFound();
+        ViewData["projectId"] = currentProj.Id;
+        ViewData["projectTitle"] = currentProj.Title;
         
-        return View();
+        if (Request.Method == "GET")
+        {
+            foreach (var field in ModelState.Keys)
+                ModelState.ClearValidationState(field);
+            var files = new List<EditProjectFileDescription>();
+            if (currentProj.Files != null) 
+                files.AddRange(currentProj.Files
+                .Select(desc => new EditProjectFileDescription 
+                    { DatabaseId = desc.Id, Name = desc.Name, Description = desc.Description, Extension = desc.Extension }));
+            var edit = new EditProjectRequest
+            {
+                Description = currentProj.Description,
+                FilesDescriptions = files.ToArray(),
+                Topics = Enum.GetValues<Topic>().ToDictionary(x => x, y => currentProj.Topics.Contains(y))
+            };
+            return View(edit);
+        }
+        
+        if (!ModelState.IsValid)
+            return View(editRequest);
+
+        currentProj.Description = editRequest.Description;
+        currentProj.Topics = editRequest.Topics.Keys.Where(key => editRequest.Topics[key]).ToArray();
+        if (editRequest.FilesDescriptions != null)
+        {
+            foreach (var tuple in editRequest.FilesDescriptions.Zip(currentProj.Files, (edited, database) => (edited: edited, database: database)))
+            {
+                tuple.database.Description = tuple.edited.Description;
+                tuple.database.Name = tuple.edited.Name;
+                if (tuple.edited.File != null)
+                {
+                    tuple.database.File = await FormFileToByteArray(tuple.edited.File);
+                    tuple.database.Extension = Path.GetExtension(tuple.edited.File.FileName);
+                    tuple.database.ContentType = tuple.edited.File.ContentType;
+                }
+            }
+        }
+
+        await projectsCollection.ReplaceOneAsync(filter, currentProj);
+        return RedirectToAction("MyProjects");
     }
 
     [AcceptVerbs("POST")]
@@ -182,5 +224,19 @@ public class ProjectsController : Controller
             pinned = !project.IsPinned,
             projectTitle = project.Title,
         });
+    }
+
+    [AcceptVerbs("GET")]
+    [Route("downloadFile/{projectId}/{fileId}")]
+    public async Task<IActionResult> DownloadFile(string projectId, string fileId)
+    {
+        var collection = _repository.GetCollection<Project>();
+        var proj = await collection.Find(p => p.Id == projectId).FirstOrDefaultAsync();
+        if (proj == null)
+            return NotFound();
+        var file = proj.Files?.SingleOrDefault(f => f.Id == fileId);
+        if (file == null)
+            return NotFound();
+        return File(file.File, file.ContentType, file.Name + file.Extension);
     }
 }

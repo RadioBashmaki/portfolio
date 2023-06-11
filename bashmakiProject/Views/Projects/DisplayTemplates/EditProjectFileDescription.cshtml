@@ -1,0 +1,42 @@
+﻿@model EditProjectFileDescription
+
+<div class="add-file-container">
+    <div class="edit-file-btn d-none" href="#" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Редактировать">
+        <div class="edit-file-btn__text mx-auto"></div>
+        <div class="edit-file-btn__delete-button"></div>
+    </div>
+    <div class="modal-container z-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-12">
+                    <div class="form-container new-file-form">
+                        <h4 class="new-file-form__title">
+                            Редактировать файл
+                        </h4>
+                        <hr class="form-divider">
+                        <input asp-for="Name" type="text" class="form-control new-file-form__filename" placeholder="Название">
+                        <span asp-validation-for="Name"></span>
+                        <textarea asp-for="Description" class="form-control new-file-form__description" placeholder="Описание"></textarea>
+                        <span asp-validation-for="Description" class="field-validation-valid"></span>
+                        <div class="new-file-form__file-download w-100 d-flex justify-content-between align-items-center">
+                            <a asp-action="DownloadFile" asp-controller="Projects" asp-route-projectId='@ViewData["projectId"]' asp-route-fileId="@Model.DatabaseId">
+                                @(Model.Name + Model.Extension)
+                            </a>
+                            <img class="replace-file-btn" src="@Url.Content("~/img/svg/cross.svg")" alt="">
+                        </div>
+                        <div class="d-none new-file-form__file-replacement-input">
+                            <input asp-for="File" type="file" class="form-control form-control-sm new-file-form__file">
+                            <span asp-validation-for="File"></span>
+                        </div>
+                        <div class="new-file-form__buttons-cont d-flex justify-content-between">
+                            <div type="button" class="new-file-form__close-button">Отмена</div>
+                            <button type="button" class="button new-file-form__add-btn ms-auto">Cохранить</button>
+                        </div>
+                        <input type="hidden" asp-for="DatabaseId" value="@Model.DatabaseId">
+                        <input type="hidden" asp-for="Extension" value="@Model.Extension">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

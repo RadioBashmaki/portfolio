@@ -823,3 +823,18 @@ header{
   user-select: none;
 }
 
+/* edit project page styles */
+
+.new-file-form__file-download{
+  border: #999999 solid 2px;
+  border-radius: 15px;
+  padding: 10px 8px;
+  margin-top: 25px;
+}
+
+.new-file-form__file-download>.replace-file-btn{
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
