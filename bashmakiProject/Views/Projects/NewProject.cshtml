@@ -15,7 +15,7 @@
                         <span asp-validation-for="Title"></span>
                         <div class="create-project-form__topic-container">
                             <div class="create-project-form__topics-label">
-                                Тематика<img src="@Url.Content("~/img/svg/plus.svg")" class="open-topic-dropdown h-100" alt/>:
+                                <span class="open-topic-dropdown">Тематика</span>
                             </div>
                             <div class="d-flex align-items-center flex-wrap">
                                 @foreach (var topic in Enum.GetValues<Topic>())
