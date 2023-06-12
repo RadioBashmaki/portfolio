@@ -185,11 +185,16 @@ public class AccountController : Controller
     }
 
     [AcceptVerbs("GET")]
-    [Route("[controller]/avatar")]
-    public async Task<IActionResult> GetUsersAvatar()
+    [Route("[controller]/avatar/{id?}")]
+    public async Task<IActionResult> GetUsersAvatar(string? id)
     {
-        var user = await GetCurrentUser();
-        if (user.PersonalData.Avatar == null)
+        if (id != null && !MongoDB.Bson.ObjectId.TryParse(id, out _))
+            return NotFound();
+        var user = id == null
+            ? await GetCurrentUser()
+            : await _repository.GetCollection<User>().Find(u => u.Id == id).FirstOrDefaultAsync();
+        
+        if (user?.PersonalData.Avatar == null)
             return NotFound();
         return File(user.PersonalData.Avatar, "image/png");
     }
