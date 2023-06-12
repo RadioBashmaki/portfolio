@@ -1,0 +1,18 @@
+﻿@model Project
+
+@* TODO: поменять ссылку после написания страницы проекта *@
+<a href="#" class="project-display-container w-100 d-flex justify-content-between">
+    <div class="project-display-container__data d-flex flex-column justify-content-between">
+        <div class="project-display-container__data__title">@Model.Title</div>
+        <div class="project-display-container__data__creation-date">
+            <span>Дата добавления: @Model.CreationDate.ToString("dd.MM.yyyy")</span>
+        </div>
+    </div>
+    <div class="project-display-container__topics-container d-flex align-items-center flex-wrap">
+        @foreach (var topic in Model.Topics)
+        {
+            var desc = topic.GetDescription()!;
+            <span class="my-projects-list-container__project__topic-display" style="background: @desc.HexColor"></span>
+        }
+    </div>
+</a>

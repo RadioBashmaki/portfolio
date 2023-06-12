@@ -1,0 +1,129 @@
+﻿@using bashmakiProject.mongodb
+@using MongoDB.Driver
+@using System.Text
+@model User
+@inject IMongoDbRepository Repo
+
+@{
+    ViewData["Title"] = "Стена";
+    string age = null;
+    if (Model.PersonalData.DateOfBirth != null)
+    {
+        age = (DateTime.Now - Model.PersonalData.DateOfBirth).Value.Days / 365 + " лет";
+    }
+    var projects = await Repo.GetCollection<Project>().Find(proj => proj.UserId == Model.Id && proj.IsPinned).ToListAsync();
+}
+
+@functions{
+
+    public string GenerateGradient(List<Project> projects)
+    {
+        var builder = new StringBuilder();
+        builder.Append("90deg");
+        var topics = projects.SelectMany(proj => proj.Topics).Distinct();
+
+        var colorToFrequency = topics.ToDictionary(x => x.GetDescription()!.HexColor, _ => 0);
+        foreach (var desc in from proj in projects from topic in proj.Topics select topic.GetDescription()!)
+        {
+            colorToFrequency[desc.HexColor]++;
+        }
+        double sum = colorToFrequency.Values.Sum();
+        var prevPercent = 0d;
+        foreach (var color in colorToFrequency.Keys)
+        {
+            var part = Math.Round(colorToFrequency[color] / sum, 2);
+            var additive = Math.Round(part / 2, 2);
+            builder.Append($",{color} {(prevPercent + additive) * 100}%");
+            prevPercent += part;
+        }
+        return builder.ToString();
+    }
+
+}
+
+<div class="bg my-projects-bg d-flex align-items-center">
+    <div class="container">
+        <div class="student-wall-container">
+            <div class="row">
+                <div class="col-8">
+                    <div class="student-wall-info-container">
+                        <img class="student-wall-info-container__avatar" src="@Url.Action("GetUsersAvatar", "Account", new { id = Model.Id })" alt>
+                        <div class="student-wall-info-container__hero-grad" style="background: linear-gradient(@GenerateGradient(projects))">
+                            <div class="links-container">
+                                <img src="@Url.Content("~/img/svg/link-icon.svg")" class="link-icon chain-icon" alt>
+                                <a @(Model.PersonalData.Links.Vk == null ? "class=disabled" : "") target="_blank" href="@Model.PersonalData.Links.Vk">
+                                    <img src="@Url.Content("~/img/svg/vk-icon.svg")" class="link-icon" alt>
+                                </a>
+                                <a @(Model.PersonalData.Links.Telegram == null ? "class=disabled" : "") target="_blank" href="@Model.PersonalData.Links.Telegram">
+                                    <img src="@Url.Content("~/img/svg/tg-icon.svg")" class="link-icon" alt>
+                                </a>
+                                <a @(Model.PersonalData.Links.Github == null ? "class=disabled" : "") target="_blank" href="@Model.PersonalData.Links.Github">
+                                    <img src="@Url.Content("~/img/svg/github-icon.svg")" class="link-icon" alt>
+                                </a>
+                                <a @(Model.PersonalData.Links.Discord == null ? "class=disabled" : "") target="_blank" href="@Model.PersonalData.Links.Discord">
+                                    <img src="@Url.Content("~/img/svg/discord-icon.svg")" class="link-icon" alt>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="student-wall-info-container__info col-6 offset-4 d-flex flex-column justify-content-between">
+                                    <div>
+                                        <div class="student-wall-info-container__info__name">
+                                            <span>@(Model.PersonalData.Name ?? "Имя (не указано)") @(Model.PersonalData.Surname ?? "Фамилия (не указано)")</span>
+                                        </div>
+                                        <div class="student-wall-info-container__info__career">
+                                            @(Model.PersonalData.Career ?? "Профессия (не указано)")
+                                        </div>
+                                    </div>
+                                    <div class="student-wall-info-container__info__data d-flex align-items-center justify-content-between flex-wrap">
+                                        <div class="data-display d-flex align-items-center">
+                                            <img class="data-icon" src="@Url.Content("~/img/svg/map-mark-icon.svg")" alt="">
+                                            <span>@(Model.PersonalData.City ?? "Город (не указано)")</span>
+                                        </div>
+                                        <div class="data-display d-flex align-items-center">
+                                            <img class="data-icon" src="@Url.Content("~/img/svg/arrow-diagonal-icon.svg")" alt="">
+                                            <span>@(age ?? "Возраст (не указано)")</span>
+                                        </div>
+                                        <div class="data-display d-flex align-items-center">
+                                            <img class="data-icon" src="@Url.Content("~/img/svg/edu-icon.svg")" alt="">
+                                            <span>@(Model.PersonalData.Education ?? "Образование (не указано)")</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="student-wall-about-container">
+                        <div class="student-wall-about-container__label">О себе</div>
+                        <div class="student-wall-about-container__content">@(Model.PersonalData.About ?? "Не указано")</div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="student-wall-projects-list-container">
+                        <div class="student-wall-projects-list-container__title-container d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <img class="student-wall-projects-list-container__title-icon" src="@Url.Content("~/img/svg/pinned-icon-unpinned.svg")" alt="">
+                                <span class="student-wall-projects-list-container__title">Витрина проектов</span>
+                            </div>
+                            <div class="student-wall-projects-list-container__pinned-count">
+                                <span>Всего проектов: @projects.Count</span>
+                            </div>
+                        </div>
+                        <div class="student-wall-projects-list-container__project-displays-container">
+                            @foreach (var proj in projects)
+                            {
+                                @Html.DisplayFor(model => proj, "ProjectWall")
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/home/avatarPlaceholderManager.js" asp-append-version="true"></script>
+}

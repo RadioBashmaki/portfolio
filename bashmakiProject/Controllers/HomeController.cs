@@ -1,10 +1,21 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using bashmakiProject.Models;
+using bashmakiProject.mongodb;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
 
 namespace bashmakiProject.Controllers;
 
 public class HomeController : Controller
 {
+    private readonly IMongoDbRepository _repository;
+
+    public HomeController(IMongoDbRepository repo)
+    {
+        _repository = repo;
+    }
+
     [HttpGet("")]
     [HttpGet("index")]
     public IActionResult Index()
@@ -12,11 +23,31 @@ public class HomeController : Controller
         ViewBag.User = User;
         return View();
     }
-    
-    [Authorize]
-    [HttpGet("hello")]
-    public IActionResult Hello()
+
+    [HttpGet("wall/{id?}")]
+    public async Task<IActionResult> Wall(string? id)
     {
-        return Content("Hello");
+        if (id != null && !MongoDB.Bson.ObjectId.TryParse(id, out _))
+            return NotFound();
+        var user = id == null
+            ? await GetCurrentUser()
+            : await _repository.GetCollection<User>().Find(u => u.Id == id).FirstOrDefaultAsync();
+
+        if (user == null)
+            return NotFound();
+        return user.Role == Role.Student ? View("StudentsWall", user) : View("RepresentativesWall", user);
+    }
+
+    [NonAction]
+    private async Task<User> GetCurrentUser()
+    {
+        var collection = _repository.GetCollection<User>();
+        var mail = User.FindFirstValue(ClaimTypes.Email);
+        var filter = Builders<User>.Filter
+            .Eq(u => u.Email, mail);
+        var user = await collection
+            .Find(filter)
+            .FirstOrDefaultAsync();
+        return user;
     }
 }
