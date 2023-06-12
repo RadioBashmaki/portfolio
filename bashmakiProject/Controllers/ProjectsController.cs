@@ -41,7 +41,7 @@ public class ProjectsController : Controller
         var project = await GetProject(createProjectRequest);
         await _repository.GetCollection<Project>().InsertOneAsync(project);
 
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction("MyProjects");
     }
 
     private async Task<Project> GetProject(CreateProjectRequest createProjectRequest)
