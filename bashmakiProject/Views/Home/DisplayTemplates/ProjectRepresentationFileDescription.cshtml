@@ -1,0 +1,31 @@
+﻿@model FileDescriptionDatabase
+
+<div class="add-file-container">
+    <div class="edit-file-btn" href="#" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Просмотр">
+        <div class="edit-file-btn__text mx-auto">@Model.Name</div>
+    </div>
+    <div class="modal-container z-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-12">
+                    <div class="form-container new-file-form position-relative">
+                        <img class="project-representation__modal-close-btn" src="@Url.Content("~/img/svg/cross.svg")" alt>
+                        <h4 class="new-file-form__title">
+                            @Model.Name
+                        </h4>
+                        <hr class="form-divider">
+                        <span class="project-representation__file-description-label">Описание</span>
+                        <div class="project-representation__file-description">
+                            @Model.Description
+                        </div>
+                        <div class="new-file-form__file-download w-100 d-flex justify-content-between align-items-center">
+                            <a asp-action="DownloadFile" asp-controller="Projects" asp-route-projectId='@ViewData["projectId"]' asp-route-fileId="@Model.Id">
+                                @(Model.Name + Model.Extension)
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

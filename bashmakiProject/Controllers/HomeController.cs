@@ -37,6 +37,19 @@ public class HomeController : Controller
             return NotFound();
         return user.Role == Role.Student ? View("StudentsWall", user) : View("RepresentativesWall", user);
     }
+    
+        
+    [AcceptVerbs("GET")]
+    [Route("projects/{id}")]
+    public async Task<IActionResult> RepresentProject(string id)
+    {
+        if (!MongoDB.Bson.ObjectId.TryParse(id, out _))
+            return NotFound();
+        var proj = await _repository.GetCollection<Project>().Find(proj => proj.Id == id).FirstOrDefaultAsync();
+        if (proj == null)
+            return NotFound();
+        return View(proj);
+    }
 
     [NonAction]
     private async Task<User> GetCurrentUser()

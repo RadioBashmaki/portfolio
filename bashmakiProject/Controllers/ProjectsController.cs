@@ -267,12 +267,4 @@ public class ProjectsController : Controller
             return NotFound();
         return File(file.File, file.ContentType, file.Name + file.Extension);
     }
-    
-    [AcceptVerbs("GET")]
-    [Route("{id}")]
-    public async Task<IActionResult> RepresentProject()
-    {
-        
-        return View();
-    }
 }

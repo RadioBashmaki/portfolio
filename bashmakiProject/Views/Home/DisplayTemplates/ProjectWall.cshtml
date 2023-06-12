@@ -1,7 +1,6 @@
 ﻿@model Project
 
-@* TODO: поменять ссылку после написания страницы проекта *@
-<a href="#" class="project-display-container w-100 d-flex justify-content-between">
+<a asp-action="RepresentProject" asp-route-id="@Model.Id" class="project-display-container w-100 d-flex justify-content-between">
     <div class="project-display-container__data d-flex flex-column justify-content-between">
         <div class="project-display-container__data__title">@Model.Title</div>
         <div class="project-display-container__data__creation-date">

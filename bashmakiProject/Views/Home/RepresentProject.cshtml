@@ -1,0 +1,59 @@
+﻿@model Project
+
+<div class="bg auth-page-bg d-flex align-items-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2 col-12">
+                <div class="form-container create-project-form-container">
+                    <div class="create-project-form">
+                        <h4 class="create-project-form__title primary-text">
+                            @Model.Title
+                        </h4>
+                        <hr class="form-divider">
+                        <div class="create-project-form__topic-container">
+                            <div class="create-project-form__topics-label">
+                                Тематика:
+                            </div>
+                            <div class="d-flex align-items-center flex-wrap">
+                                @foreach (var topic in Model.Topics)
+                                {
+                                    var desc = topic.GetDescription()!;
+                                    <div class="topic-tab" style="background: @desc.HexColor">@desc.ShortName</div>
+                                }
+                            </div>
+                        </div>
+                        <div class="create-project-form__description">
+                            <div class="label-icon-container d-flex align-items-center">
+                                <img src="@Url.Content("~/img/svg/attention-icon.svg")" class="label-icon" alt>
+                                <span class="description-label">Описание</span>
+                            </div>
+                            <div class="create-project-form__description__text">
+                                @Model.Description
+                            </div>
+                        </div>
+                        <div class="create-project-form__files">
+                            <div class="label-icon-container d-flex align-items-center">
+                                <img src="@Url.Content("~/img/svg/folder-icon.svg")" class="label-icon" alt>
+                                <span>Файлы</span>
+                            </div>
+                            <div class="file-forms-container">
+                                @if (Model.Files != null)
+                                {
+                                    foreach (var file in Model.Files)
+                                    {
+                                        @Html.DisplayFor(model => file, "ProjectRepresentationFileDescription", new { projectId = Model.Id })
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/projects/projectRepresentationFileModalManager.js" asp-append-version="true"></script>
+}
