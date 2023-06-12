@@ -31,9 +31,10 @@
         var prevPercent = 0d;
         foreach (var color in colorToFrequency.Keys)
         {
-            var part = Math.Round(colorToFrequency[color] / sum, 2);
-            var additive = Math.Round(part / 2, 2);
-            builder.Append($",{color} {(prevPercent + additive) * 100}%");
+            var part = colorToFrequency[color] / sum;
+            var additive = part / 2;
+            var value = (int)Math.Round((prevPercent + additive) * 100);
+            builder.Append($",{color} {value}%");
             prevPercent += part;
         }
         return builder.ToString();
