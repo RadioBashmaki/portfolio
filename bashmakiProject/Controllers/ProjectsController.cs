@@ -131,6 +131,8 @@ public class ProjectsController : Controller
     [Authorize(Policy = "OnlyForStudents")]
     public async Task<IActionResult> EditProject([FromRoute] string id, [FromForm] EditProjectRequest editRequest)
     {
+        if (!MongoDB.Bson.ObjectId.TryParse(id, out _))
+            return NotFound();
         var user = await GetCurrentUser();
         var projectsCollection = _repository.GetCollection<Project>();
         var filter = Builders<Project>.Filter
@@ -153,6 +155,7 @@ public class ProjectsController : Controller
                     { DatabaseId = desc.Id, Name = desc.Name, Description = desc.Description, Extension = desc.Extension }));
             var edit = new EditProjectRequest
             {
+                Title = currentProj.Title,
                 Description = currentProj.Description,
                 FilesDescriptions = files.ToArray(),
                 Topics = Enum.GetValues<Topic>().ToDictionary(x => x, y => currentProj.Topics.Contains(y))
@@ -162,26 +165,51 @@ public class ProjectsController : Controller
         
         if (!ModelState.IsValid)
             return View(editRequest);
+        
+        var editedFiles = editRequest.FilesDescriptions?.Where(x => x.DatabaseId != null).ToDictionary(x => x.DatabaseId!);
 
         currentProj.Description = editRequest.Description;
         currentProj.Topics = editRequest.Topics.Keys.Where(key => editRequest.Topics[key]).ToArray();
-        if (editRequest.FilesDescriptions != null)
+        if (editRequest.FilesDescriptions == null || editRequest.FilesDescriptions.Length == 0)
+            currentProj.Files = null;
+        else if (editedFiles != null && currentProj.Files != null)
         {
-            foreach (var tuple in editRequest.FilesDescriptions.Zip(currentProj.Files, (edited, database) => (edited: edited, database: database)))
+            foreach (var file in currentProj.Files)
             {
-                tuple.database.Description = tuple.edited.Description;
-                tuple.database.Name = tuple.edited.Name;
-                if (tuple.edited.File != null)
+                file.Description = editedFiles[file.Id].Description;
+                file.Name = editedFiles[file.Id].Name;
+                if (editedFiles[file.Id].File != null)
                 {
-                    tuple.database.File = await FormFileToByteArray(tuple.edited.File);
-                    tuple.database.Extension = Path.GetExtension(tuple.edited.File.FileName);
-                    tuple.database.ContentType = tuple.edited.File.ContentType;
+                    file.File = await FormFileToByteArray(editedFiles[file.Id].File!);
+                    file.Extension = Path.GetExtension(editedFiles[file.Id].File!.FileName);
+                    file.ContentType = editedFiles[file.Id].File!.ContentType;
                 }
             }
+            var filesList = currentProj.Files.ToList();
+            foreach (var newFile in editRequest.FilesDescriptions!.Where(f => f.DatabaseId == null))
+                filesList.Add(new FileDescriptionDatabase
+                {
+                    Name = newFile.Name,
+                    Description = newFile.Description,
+                    File = await FormFileToByteArray(newFile.File!),
+                    ContentType = newFile.File!.ContentType,
+                    Extension = Path.GetExtension(newFile.File!.FileName)
+                });
+            currentProj.Files = filesList.ToArray();
         }
+
+        
 
         await projectsCollection.ReplaceOneAsync(filter, currentProj);
         return RedirectToAction("MyProjects");
+    }
+    
+    [AcceptVerbs("POST")]
+    [Route("edit/newFile")]
+    [Authorize(Policy = "OnlyForStudents")]
+    public IActionResult EditProjectNewFile([Bind("FilesDescriptions")]EditProjectRequest editRequest)
+    {
+        return PartialView("_editProjectNewFilesPartial", editRequest);
     }
 
     [AcceptVerbs("POST")]
@@ -238,5 +266,13 @@ public class ProjectsController : Controller
         if (file == null)
             return NotFound();
         return File(file.File, file.ContentType, file.Name + file.Extension);
+    }
+    
+    [AcceptVerbs("GET")]
+    [Route("{id}")]
+    public async Task<IActionResult> RepresentProject()
+    {
+        
+        return View();
     }
 }

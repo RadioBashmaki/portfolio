@@ -7,9 +7,11 @@
                 <div class="form-container create-project-form-container">
                     <form method="post" asp-controller="Projects" asp-action="EditProject" class="create-project-form" enctype="multipart/form-data">
                         <h4 class="create-project-form__title primary-text">
-                            @ViewData["projectTitle"]
+                            Редактировать проект
                         </h4>
                         <hr class="form-divider">
+                        <input type="text" class="form-control create-project-form__title-input w-50" asp-for="Title" placeholder="Название">
+                        <span asp-validation-for="Title"></span>
                         <div class="create-project-form__topic-container">
                             <div class="create-project-form__topics-label">
                                 <span class="open-topic-dropdown">Тематика</span>
@@ -52,6 +54,9 @@
                             <div class="file-forms-container">
                                 @Html.DisplayFor(model => model.FilesDescriptions)
                             </div>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <img src="@Url.Content("~/img/svg/plus2.svg")" class="more-files-btn" alt>
+                            </div>
                         </div>
                         <button class="button create-project-form__save-btn">Сохранить</button>
                     </form>
@@ -63,6 +68,6 @@
 
 @section Scripts{
     <script src="~/js/projects/topicTabManager.js" asp-append-version="true"></script>
-    <script src="~/js/projects/modalValidationManager.js" asp-append-version="true"></script>
+    <script src="~/js/projects/editProjectModalManager.js" asp-append-version="true"></script>
     <script src="~/js/projects/editProjectReplaceFileManager.js" asp-append-version="true"></script>
 }

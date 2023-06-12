@@ -5,6 +5,9 @@ namespace bashmakiProject.Models;
 
 public class EditProjectRequest : IValidatableObject
 {
+    [Required(ErrorMessage = "Это обязательное поле")]
+    public string Title { get; set; }
+
     public Dictionary<Topic, bool> Topics { get; set; }
     [Required(ErrorMessage = "Это обязательное поле")]
     [StringLength(350)]
@@ -27,6 +30,7 @@ public class EditProjectFileDescription
     public string Name { get; set; }
     [Required(ErrorMessage = "Это обязательное поле")]
     public string Description { get; set; }
+    [Required(ErrorMessage = "Это обязательное поле")]
     public IFormFile? File { get; set; }
     public string? Extension { get; set; }
 }
