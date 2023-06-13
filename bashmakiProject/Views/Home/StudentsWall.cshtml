@@ -51,7 +51,7 @@
                         <img class="student-wall-info-container__avatar" src="@Url.Action("GetUsersAvatar", "Account", new { id = Model.Id })" alt>
                         <div class="student-wall-info-container__hero-grad" style="background: linear-gradient(@GenerateGradient(projects))">
                             <div class="links-container">
-                                <img src="@Url.Content("~/img/svg/link-icon.svg")" class="link-icon chain-icon" alt>
+                                <img src="@Url.Content("~/img/svg/link-icon.svg")" class="chain-icon" alt>
                                 <a @(Model.PersonalData.Links.Vk == null ? "class=disabled" : "") target="_blank" href="@Model.PersonalData.Links.Vk">
                                     <img src="@Url.Content("~/img/svg/vk-icon.svg")" class="link-icon" alt>
                                 </a>

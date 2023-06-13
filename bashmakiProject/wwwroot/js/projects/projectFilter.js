@@ -22,7 +22,11 @@ $setFilterButton.on("click", function(){
         url: $setFilterForm.attr("action"),
         success: function(partialView) {
             $projectsContainer.html(partialView);
-            $projectsCount.html($projectsContainer.find(".my-projects-list-container__project").length)
+            const $innerContainers = $projectsContainer.find(".my-projects-list-container__project");
+            $innerContainers.each(function(){
+                new bootstrap.Tooltip($(this).find(".my-projects-list-container__project__info")[0]);
+            })
+            $projectsCount.html($innerContainers.length);
         }
     })
 })

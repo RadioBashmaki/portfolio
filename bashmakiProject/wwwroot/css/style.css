@@ -44,7 +44,6 @@ main {
 .form-divider {
     border: 3px solid #494949;
     margin-bottom: 19px;
-    box-shadow: 0 4px 3px 0 rgba(0, 0, 0, .25);
 }
 
 .form-offer {
@@ -661,7 +660,7 @@ header {
 }
 
 .search-icon {
-    background: url("../img/svg/search-icon.svg");
+    background: url("../img/svg/search-icon-1.svg") no-repeat center;
     margin-right: 12px;
     width: 30px;
     aspect-ratio: 1 / 1;
@@ -942,7 +941,7 @@ header {
     margin: 0 3px;
 }
 
-.links-container .link-icon.chain-icon{
+.links-container .chain-icon{
     height: 18px;
     width: 18px;
     margin-right: 6px;
@@ -993,7 +992,7 @@ header {
     line-height: 24px;
     color: #898989;
     height: calc((100vh - 135px) * .4 - 104px);
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .student-wall-projects-list-container__title{
@@ -1038,6 +1037,10 @@ header {
     text-decoration: none;
 }
 
+.project-display-container__data{
+    overflow: hidden;
+}
+
 .project-display-container__data__title{
     font-weight: 500;
     font-size: 16px;
@@ -1061,7 +1064,7 @@ header {
     height: 160px;
     border-radius: 15px;
     border: #CCCCCC solid 3px;
-    overflow-y: scroll;
+    overflow-y: auto;
     padding: 10px;
 }
 .create-project-form__description__text::-webkit-scrollbar, .project-representation__file-description::-webkit-scrollbar{

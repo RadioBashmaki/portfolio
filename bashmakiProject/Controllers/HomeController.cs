@@ -48,6 +48,9 @@ public class HomeController : Controller
         var proj = await _repository.GetCollection<Project>().Find(proj => proj.Id == id).FirstOrDefaultAsync();
         if (proj == null)
             return NotFound();
+        var user = await GetCurrentUser();
+        if (!proj.IsPinned && (user == null || user.Id != proj.UserId))
+            return Forbid();
         return View(proj);
     }
 

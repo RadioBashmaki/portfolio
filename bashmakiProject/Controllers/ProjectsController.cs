@@ -137,11 +137,12 @@ public class ProjectsController : Controller
         var user = await GetCurrentUser();
         var projectsCollection = _repository.GetCollection<Project>();
         var filter = Builders<Project>.Filter
-            .Eq(proj => proj.UserId, user.Id);
-        var projects = await projectsCollection.Find(filter).ToListAsync();
-        var currentProj = projects?.SingleOrDefault(proj => proj.Id == id);
+            .Eq(proj => proj.Id, id);
+        var currentProj = await projectsCollection.Find(filter).FirstOrDefaultAsync();
         if (currentProj == null)
             return NotFound();
+        if (currentProj.UserId != user.Id)
+            return Forbid();
         ViewData["projectId"] = currentProj.Id;
         ViewData["projectTitle"] = currentProj.Title;
         
@@ -205,7 +206,6 @@ public class ProjectsController : Controller
                 Extension = Path.GetExtension(newFile.File!.FileName)
             });
         currentProj.Files = filesList.ToArray();
-
         await projectsCollection.ReplaceOneAsync(filter, currentProj);
         return RedirectToAction("MyProjects");
     }
