@@ -69,11 +69,20 @@
                                 {
                                     <div class="row profile-form__field">
                                         <div class="col-3 d-flex justify-content-md-end justify-content-start align-items-center">
-                                            <label class="profile-form__label" asp-for="Company">Компания</label>
+                                            <label class="profile-form__label" asp-for="Company.Name">Название компании</label>
                                         </div>
                                         <div class="col-12 col-md-9">
-                                            <input class="form-control" type="text" asp-for="Company">
-                                            <span asp-validation-for="Company"></span>
+                                            <input class="form-control" type="text" asp-for="Company.Name">
+                                            <span asp-validation-for="Company.Name"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row profile-form__field">
+                                        <div class="col-3 d-flex justify-content-md-end justify-content-start align-items-center">
+                                            <label class="profile-form__label" asp-for="Company.Description">Описание компании</label>
+                                        </div>
+                                        <div class="col-12 col-md-9">
+                                            <textarea class="form-control profile-form__company-desc" asp-for="Company.Description">@Model.Company.Description</textarea>
+                                            <span asp-validation-for="Company.Description"></span>
                                         </div>
                                     </div>
                                 }

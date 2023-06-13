@@ -87,7 +87,10 @@ public class AccountController : Controller
                 Surname = registerRequest.Surname,
                 DateOfBirth = registerRequest.DateOfBirth,
                 Gender = registerRequest.Gender,
-                Company = registerRequest.Company
+                Company = new Company
+                {
+                    Name = registerRequest.Company,
+                }
             }
         };
 

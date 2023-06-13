@@ -31,13 +31,20 @@ public class PersonalData
     public string? City { get; set; }
     [StringLength(50, ErrorMessage = "Слишком длинная строка")]
     public string? Career { get; set; }
-    [StringLength(50, ErrorMessage = "Слишком длинная строка")]
-    public string? Company { get; set; }
+    public Company Company { get; set; }
     [StringLength(100, ErrorMessage = "Слишком длинная строка")]
     public string? Education { get; set; }
     [StringLength(350, ErrorMessage = "Слишком длинная строка")]
     public string? About { get; set; }
     public Links Links { get; set; }
+}
+
+public class Company
+{
+    [StringLength(50, ErrorMessage = "Слишком длинная строка")]
+    public string? Name { get; set; }
+    [StringLength(1000, ErrorMessage = "Слишком длинная строка")]
+    public string? Description { get; set; }
 }
 
 public class Links
