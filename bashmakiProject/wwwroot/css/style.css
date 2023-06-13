@@ -182,6 +182,13 @@ header {
     color: #494949;
 }
 
+.default-label{
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    color: #676767;
+}
+
 /* fancy loader */
 
 .loader {
@@ -1072,5 +1079,8 @@ header {
     cursor: pointer;
 }
 
+/* create internship page styles */
 
-
+.create-internship__exp-radio-container{
+    margin-top: 25px;
+}
