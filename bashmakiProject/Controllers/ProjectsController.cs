@@ -79,12 +79,12 @@ public class ProjectsController : Controller
         return project;
     }
 
-    [AcceptVerbs("GET")]
+    [AcceptVerbs("POST")]
     [Route("addFileFormModal")]
     [Authorize(Policy = "OnlyForStudents")]
-    public IActionResult ModalPartial(int index)
+    public IActionResult ModalPartial([Bind("FilesDescriptions")]CreateProjectRequest createRequest)
     {
-        ViewData["index"] = index.ToString();
+        ViewData["index"] = createRequest.FilesDescriptions?.Length ?? 0;
         return PartialView("_ModalPartial");
     }
 
@@ -178,26 +178,39 @@ public class ProjectsController : Controller
         currentProj.Title = editRequest.Title;
         currentProj.Description = editRequest.Description;
         currentProj.Topics = editRequest.Topics.Keys.Where(key => editRequest.Topics[key]).ToArray();
-        if (editRequest.FilesDescriptions == null || editRequest.FilesDescriptions.Length == 0)
+        if (editRequest.FilesDescriptions == null || editRequest.FilesDescriptions.Length == 0 ||
+            editedFiles == null || editedFiles.Count == 0)
             currentProj.Files = null;
-        else if (editedFiles != null && currentProj.Files != null)
+        else if (currentProj.Files != null)
         {
-            foreach (var file in currentProj.Files)
+            var oldFiles = currentProj.Files.ToDictionary(x => x.Id);
+            var filesLeft = editedFiles.Keys.Select(key =>
             {
-                file.Description = editedFiles[file.Id].Description;
-                file.Name = editedFiles[file.Id].Name;
-                if (editedFiles[file.Id].File != null)
+                var newFile = new FileDescriptionDatabase
                 {
-                    file.File = await FormFileToByteArray(editedFiles[file.Id].File!);
-                    file.Extension = Path.GetExtension(editedFiles[file.Id].File!.FileName);
-                    file.ContentType = editedFiles[file.Id].File!.ContentType;
+                    Name = editedFiles[key].Name,
+                    Description = editedFiles[key].Description
+                };
+                if (editedFiles[key].File != null)
+                {
+                    newFile.File = FormFileToByteArray(editedFiles[key].File!).Result;
+                    newFile.Extension = Path.GetExtension(editedFiles[key].File!.FileName);
+                    newFile.ContentType = editedFiles[key].File!.ContentType;
                 }
-            }
+                else
+                {
+                    newFile.File = oldFiles[key].File;
+                    newFile.Extension = oldFiles[key].Extension;
+                    newFile.ContentType = oldFiles[key].ContentType;
+                }
+                return newFile;
+            });
+            currentProj.Files = filesLeft.ToArray();
         }
         
-        var filesList = currentProj.Files?.ToList() ?? new List<FileDescriptionDatabase>();
+        var newFiles = currentProj.Files?.ToList() ?? new List<FileDescriptionDatabase>();
         foreach (var newFile in editRequest.FilesDescriptions?.Where(f => f.DatabaseId == null) ?? Array.Empty<EditProjectFileDescription>())
-            filesList.Add(new FileDescriptionDatabase
+            newFiles.Add(new FileDescriptionDatabase
             {
                 Name = newFile.Name,
                 Description = newFile.Description,
@@ -205,17 +218,9 @@ public class ProjectsController : Controller
                 ContentType = newFile.File!.ContentType,
                 Extension = Path.GetExtension(newFile.File!.FileName)
             });
-        currentProj.Files = filesList.ToArray();
+        currentProj.Files = newFiles.ToArray();
         await projectsCollection.ReplaceOneAsync(filter, currentProj);
         return RedirectToAction("MyProjects");
-    }
-    
-    [AcceptVerbs("POST")]
-    [Route("edit/newFile")]
-    [Authorize(Policy = "OnlyForStudents")]
-    public IActionResult EditProjectNewFile([Bind("FilesDescriptions")]EditProjectRequest editRequest)
-    {
-        return PartialView("_editProjectNewFilesPartial", editRequest);
     }
 
     [AcceptVerbs("POST")]

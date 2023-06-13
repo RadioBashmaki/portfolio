@@ -9,7 +9,7 @@ public class CreateProjectRequest : IValidatableObject
     public string Title { get; set; }
     public Dictionary<Topic, bool> Topics { get; set; }
     [Required(ErrorMessage = "Это обязательное поле")]
-    [StringLength(350)]
+    [StringLength(5000)]
     public string Description { get; set; }
 
     public FileDescription[]? FilesDescriptions { get; set; }

@@ -10,7 +10,7 @@ public class EditProjectRequest : IValidatableObject
 
     public Dictionary<Topic, bool> Topics { get; set; }
     [Required(ErrorMessage = "Это обязательное поле")]
-    [StringLength(350)]
+    [StringLength(5000)]
     public string Description { get; set; }
 
     public EditProjectFileDescription[]? FilesDescriptions { get; set; }

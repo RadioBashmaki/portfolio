@@ -29,7 +29,7 @@ $btn.click(function() {
     $.ajax({
         async: true,
         type: "POST",
-        url: "/projects/edit/newFile",
+        url: $form.data("newFilePath"),
         data: $form.serialize(),
         success: function(partialView) {
             $newFilesCont.append(partialView);
@@ -87,8 +87,28 @@ function manageAddBtnClick(e){
 
 function manageFileDeletion(e){
     const $addFileCont = $(e.currentTarget).closest(".add-file-container");
+    const $nextContainers = $addFileCont.nextAll(".add-file-container");
+    const replacer = function($0, $1, $2, $3){
+        return $1 + (parseInt($2) - 1) + $3;
+    }
     e.stopPropagation();
     bootstrap.Tooltip.getInstance($(e.currentTarget).closest(".edit-file-btn")).dispose();
+    $nextContainers.each(function(){
+        $(this).find("input, textarea").each(function(){
+            const id = $(this).attr("id");
+            const name = $(this).attr("name");
+            const aria = $(this).attr("aria-describedby");
+            const regex = /([_|\[])(\d+)(__|])/g;
+            $(this).attr("id", id.replace(regex, replacer));
+            $(this).attr("name", name.replace(regex, replacer));
+            this.hasAttribute("aria-describedby") && $(this).attr("aria-describedby", aria.replace(regex, replacer));
+        })
+        $(this).find("span[data-valmsg-for]").each(function(){
+            const val = $(this).attr("data-valmsg-for");
+            const regex = /([_|\[])(\d+)(__|])/g;
+            $(this).attr("data-valmsg-for", val.replace(regex, replacer));
+        })
+    })
     $addFileCont.remove();
 }
 

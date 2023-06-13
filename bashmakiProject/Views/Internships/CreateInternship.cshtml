@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-md-8 offset-md-2 col-12">
                 <div class="form-container create-project-form-container">
-                    <form method="post" asp-action="CreateInternship" class="create-project-form" enctype="multipart/form-data">
+                    <form method="post" asp-action="CreateInternship" data-new-file-path="@Url.Action("AddFile")" class="create-project-form" enctype="multipart/form-data">
                         <h4 class="create-project-form__title primary-text">
                             Создание стажировки
                         </h4>
@@ -82,5 +82,5 @@
 
 @section Scripts{
     <script src="~/js/projects/topicTabManager.js" asp-append-version="true"></script>
-    <script src="~/js/internships/modalManager.js" asp-append-version="true"></script>
+    <script src="~/js/projects/editProjectModalManager.js" asp-append-version="true"></script>
 }

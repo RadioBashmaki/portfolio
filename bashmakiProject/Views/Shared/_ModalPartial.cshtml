@@ -1,8 +1,7 @@
 ﻿@model CreateProjectRequest
 
 @{
-    Layout = null;
-    var index = int.Parse((ViewData["index"] as string)!);
+    var index = (int)ViewData["index"]!;
 }
 
 <div class="add-file-container">
