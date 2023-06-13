@@ -4,6 +4,7 @@ using bashmakiProject.mongodb;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using MongoDB.Driver;
 
 namespace bashmakiProject.Controllers;
@@ -162,12 +163,18 @@ public class ProjectsController : Controller
             };
             return View(edit);
         }
-        
+
         if (!ModelState.IsValid)
-            return View(editRequest);
+        {
+            var errorsWithFiles = ModelState.Count(item =>
+                item.Key.EndsWith("File") && item.Value.ValidationState == ModelValidationState.Invalid);
+            if (errorsWithFiles != ModelState.ErrorCount)
+                return View(editRequest);
+        }
         
         var editedFiles = editRequest.FilesDescriptions?.Where(x => x.DatabaseId != null).ToDictionary(x => x.DatabaseId!);
 
+        currentProj.Title = editRequest.Title;
         currentProj.Description = editRequest.Description;
         currentProj.Topics = editRequest.Topics.Keys.Where(key => editRequest.Topics[key]).ToArray();
         if (editRequest.FilesDescriptions == null || editRequest.FilesDescriptions.Length == 0)
@@ -185,20 +192,19 @@ public class ProjectsController : Controller
                     file.ContentType = editedFiles[file.Id].File!.ContentType;
                 }
             }
-            var filesList = currentProj.Files.ToList();
-            foreach (var newFile in editRequest.FilesDescriptions!.Where(f => f.DatabaseId == null))
-                filesList.Add(new FileDescriptionDatabase
-                {
-                    Name = newFile.Name,
-                    Description = newFile.Description,
-                    File = await FormFileToByteArray(newFile.File!),
-                    ContentType = newFile.File!.ContentType,
-                    Extension = Path.GetExtension(newFile.File!.FileName)
-                });
-            currentProj.Files = filesList.ToArray();
         }
-
         
+        var filesList = currentProj.Files?.ToList() ?? new List<FileDescriptionDatabase>();
+        foreach (var newFile in editRequest.FilesDescriptions?.Where(f => f.DatabaseId == null) ?? Array.Empty<EditProjectFileDescription>())
+            filesList.Add(new FileDescriptionDatabase
+            {
+                Name = newFile.Name,
+                Description = newFile.Description,
+                File = await FormFileToByteArray(newFile.File!),
+                ContentType = newFile.File!.ContentType,
+                Extension = Path.GetExtension(newFile.File!.FileName)
+            });
+        currentProj.Files = filesList.ToArray();
 
         await projectsCollection.ReplaceOneAsync(filter, currentProj);
         return RedirectToAction("MyProjects");
