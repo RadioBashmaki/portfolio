@@ -418,11 +418,11 @@ header {
 }
 
 .create-project-form__save-btn {
-    width: 168px;
     height: 50px;
     border-radius: 25px;
     margin-left: auto;
     margin-top: 40px;
+    padding: 0 25px;
 }
 
 .create-project-form__topic-container {

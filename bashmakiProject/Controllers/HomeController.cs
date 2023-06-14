@@ -93,6 +93,25 @@ public class HomeController : Controller
             return Forbid();
         return View(proj);
     }
+    
+    [HttpGet("internships/{id}")]
+    public async Task<IActionResult> RepresentInternship(string id)
+    {
+        if (!MongoDB.Bson.ObjectId.TryParse(id, out _))
+            return NotFound();
+        var internship = await _repository.GetCollection<Internship>().Find(i => i.Id == id).FirstOrDefaultAsync();
+        if (internship == null)
+            return NotFound();
+        var user = await GetCurrentUser();
+        if (!internship.IsActive && (user == null || user.Id != internship.UserId))
+            return Forbid();
+        if (user is { Role: Role.Student })
+        {
+            ViewData["isStudent"] = true;
+        }
+            
+        return View(internship);
+    }
 
     [NonAction]
     private async Task<User?> GetCurrentUser()
