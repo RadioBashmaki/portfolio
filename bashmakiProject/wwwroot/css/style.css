@@ -118,11 +118,14 @@ main {
     border: none;
     color: white;
     text-align: center;
-    cursor: pointer;
     font-weight: 700;
 }
 
-.button:hover {
+.button:not(:disabled){
+    cursor: pointer;
+}
+
+.button:not(:disabled):hover {
     opacity: .8;
 }
 
@@ -423,6 +426,10 @@ header {
     margin-left: auto;
     margin-top: 40px;
     padding: 0 25px;
+}
+
+.create-project-form__save-btn:disabled{
+    filter: grayscale(100%);
 }
 
 .create-project-form__topic-container {

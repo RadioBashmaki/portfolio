@@ -19,6 +19,12 @@ public class Internship : MongoEntity
     
     public bool IsActive { get; set; }
     public FileDescriptionDatabase[]? Files { get; set; }
+    public InternshipRequest[] InternshipRequests { get; set; }
+
+    public Internship()
+    {
+        InternshipRequests = Array.Empty<InternshipRequest>();
+    }
 }
 
 public enum Experience{

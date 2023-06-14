@@ -58,7 +58,7 @@ public class InternshipsController : Controller
             }).ToArray(),
         };
         await internshipsCollection.InsertOneAsync(internship);
-        return View(request);
+        return RedirectToAction("Wall", "Home", new { id = internship.UserId });
     }
 
     [Authorize(Policy = "OnlyForRepresentatives")]
@@ -101,7 +101,7 @@ public class InternshipsController : Controller
             FilesDescriptions = files.ToArray(),
             Topics = Enum.GetValues<Topic>().ToDictionary(x => x, y => currentInternship.Topics.Contains(y))
         };
-        
+
         return View(edit);
     }
 
@@ -127,8 +127,9 @@ public class InternshipsController : Controller
             if (errorsWithFiles != ModelState.ErrorCount)
                 return View(editRequest);
         }
-        
-        var editedFiles = editRequest.FilesDescriptions?.Where(x => x.DatabaseId != null).ToDictionary(x => x.DatabaseId!);
+
+        var editedFiles = editRequest.FilesDescriptions?.Where(x => x.DatabaseId != null)
+            .ToDictionary(x => x.DatabaseId!);
 
         currentInternship.Title = editRequest.Title;
         currentInternship.Description = editRequest.Description;
@@ -159,13 +160,15 @@ public class InternshipsController : Controller
                     newFile.Extension = oldFiles[key].Extension;
                     newFile.ContentType = oldFiles[key].ContentType;
                 }
+
                 return newFile;
             });
             currentInternship.Files = filesLeft.ToArray();
         }
-        
+
         var filesList = currentInternship.Files?.ToList() ?? new List<FileDescriptionDatabase>();
-        foreach (var newFile in editRequest.FilesDescriptions?.Where(f => f.DatabaseId == null) ?? Array.Empty<EditProjectFileDescription>())
+        foreach (var newFile in editRequest.FilesDescriptions?.Where(f => f.DatabaseId == null) ??
+                                Array.Empty<EditProjectFileDescription>())
             filesList.Add(new FileDescriptionDatabase
             {
                 Name = newFile.Name,
@@ -176,7 +179,7 @@ public class InternshipsController : Controller
             });
         currentInternship.Files = filesList.ToArray();
         await internshipsCollection.ReplaceOneAsync(filter, currentInternship);
-        return View(editRequest);
+        return RedirectToAction("Wall", "Home", new { id = currentInternship.UserId });
     }
 
     [NonAction]

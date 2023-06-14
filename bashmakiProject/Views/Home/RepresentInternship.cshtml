@@ -2,7 +2,9 @@
 
 @{
     ViewData["Title"] = $"{Model.Title}";
-    var isStudent = ViewData["isStudent"] != null;
+    User student = null;
+    if (ViewData["student"] != null)
+        student = (User)ViewData["student"]!;
 }
 
 <div class="bg auth-page-bg d-flex align-items-center">
@@ -58,9 +60,14 @@
                                 }
                             </div>
                         </div>
-                        @if (isStudent)
+                        @if (student != null)
                         {
-                            <button class="button create-project-form__save-btn ms-auto mt-4">Оставить отклик</button>
+                            ViewData["existingRequests"] = Model.InternshipRequests;
+                            await Html.RenderPartialAsync("_InternhsipRequestPartial", new InternshipRequest
+                            {
+                                StudentId = student.Id,
+                                InternshipId = Model.Id
+                            }, ViewData);
                         }
                     </div>
                 </div>

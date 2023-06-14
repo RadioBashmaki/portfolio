@@ -42,7 +42,6 @@ $btn.click(function() {
             const $modalCont = $addFileCont.find(".modal-container");
             const $editFileBtn = $addFileCont.find(".edit-file-btn");
             const tooltip = new bootstrap.Tooltip($($editFileBtn)[0])
-            tooltipList.push(tooltip);
 
             $modalCont.find(".new-file-form__close-button").click(function() {
                 $addFileCont.remove();

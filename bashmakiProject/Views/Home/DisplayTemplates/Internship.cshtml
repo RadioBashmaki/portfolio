@@ -6,10 +6,23 @@
     {
         attrs = $"href={Url.Action("EditInternship", "Internships", new { id = Model.Id })} data-bs-toggle=tooltip data-bs-placement=top data-bs-title=Редактировать";
     }
+    var student = ViewData["student"] as User;
+    InternshipRequest? request = null;
+    if (student != null)
+        foreach(var r in Model.InternshipRequests)
+            if (r.StudentId == student.Id)
+                request = r;
 }
 
-<a asp-action="RepresentInternship" asp-route-id="@Model.Id" class="internship d-block text-decoration-none filtered-item">
-    <div class="internship__info d-flex align-items-center justify-content-between h-100">
+<a asp-action="RepresentInternship" asp-route-id="@Model.Id" class="internship d-flex w-100 text-decoration-none filtered-item">
+    @if (request != null)
+    {
+        <div class="d-flex align-items-center h-100">
+            <img src="@Url.Content($"~/img/svg/status-{request.Status.ToString().ToLower()}.svg")" class="me-2" alt>
+        </div>
+        <div class="divider-thin h-100"></div>
+    }
+    <div class="internship__info d-flex w-100 align-items-center justify-content-between h-100">
         <object class="h-100">
             <a @(attrs) class="d-flex flex-column justify-content-between text-decoration-none h-100">
                 <div class="d-flex align-items-center">

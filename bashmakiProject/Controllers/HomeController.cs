@@ -45,8 +45,8 @@ public class HomeController : Controller
             internships = internships.Where(i => i.IsActive).ToList();
             ViewData["ownPage"] = false;
         }
-        if (currentUser != null && user.Id != currentUser.Id && user.Role == Role.Student)
-            ViewData["visitor"] = currentUser;
+        if (currentUser != null && user.Id != currentUser.Id && currentUser.Role == Role.Student)
+            ViewData["student"] = currentUser;
         
         return View("RepresentativesWall", new RepresentativeWallRepresentation
         {
@@ -107,10 +107,26 @@ public class HomeController : Controller
             return Forbid();
         if (user is { Role: Role.Student })
         {
-            ViewData["isStudent"] = true;
+            ViewData["student"] = user;
         }
             
         return View(internship);
+    }
+    
+    [HttpPost("internships/newRequest")]
+    [Authorize(Policy = "OnlyForStudents")]
+    public async Task<IActionResult> CreateInternshipRequest(InternshipRequest request)
+    {
+        var collection = _repository.GetCollection<Internship>();
+        var filter = Builders<Internship>.Filter.Eq(i => i.Id, request.InternshipId);
+        var internship = await collection.Find(i => i.Id == request.InternshipId).FirstOrDefaultAsync();
+        var requests = internship.InternshipRequests.ToList();
+        if (requests.Select(r => r.StudentId).Contains(request.StudentId))
+            return Forbid();
+        requests.Add(request);
+        var update = Builders<Internship>.Update.Set(i => i.InternshipRequests, requests.ToArray());
+        await collection.UpdateOneAsync(filter, update);
+        return RedirectToAction("Wall", new { id = internship.UserId });
     }
 
     [NonAction]
