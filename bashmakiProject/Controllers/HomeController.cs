@@ -29,16 +29,56 @@ public class HomeController : Controller
     {
         if (id != null && !MongoDB.Bson.ObjectId.TryParse(id, out _))
             return NotFound();
+        var currentUser = await GetCurrentUser();
         var user = id == null
-            ? await GetCurrentUser()
+            ? currentUser
             : await _repository.GetCollection<User>().Find(u => u.Id == id).FirstOrDefaultAsync();
 
-        if (user == null)
+        if (id == null && currentUser == null || id != null && user == null)
             return NotFound();
-        return user.Role == Role.Student ? View("StudentsWall", user) : View("RepresentativesWall", user);
-    }
-    
+        if (user!.Role == Role.Student)
+            return View("StudentsWall", user);
+        var internships = await _repository.GetCollection<Internship>().Find(i => i.UserId == user.Id).ToListAsync();
+        ViewData["ownPage"] = true;
+        if (currentUser == null || user.Id != currentUser.Id)
+        {
+            internships = internships.Where(i => i.IsActive).ToList();
+            ViewData["ownPage"] = false;
+        }
+        if (currentUser != null && user.Id != currentUser.Id && user.Role == Role.Student)
+            ViewData["visitor"] = currentUser;
         
+        return View("RepresentativesWall", new RepresentativeWallRepresentation
+        {
+            User = user, FilterInternshipsRequest = new FilterInternshipsRequest
+                { Internships = internships }
+        });
+    }
+
+    [HttpPost("internships/filter/{ownerId}")]
+    public async Task<IActionResult> FilterInternships(string ownerId, [FromForm][Bind("FilterInternshipsRequest")] RepresentativeWallRepresentation representation)
+    {
+        var filterRequest = representation.FilterInternshipsRequest;
+        var user = await GetCurrentUser();
+        var internships =  await _repository.GetCollection<Internship>().Find(i => i.UserId == ownerId).ToListAsync();
+        ViewData["ownPage"] = true;
+        if (user == null || user.Id != ownerId)
+        {
+            internships = internships.Where(i => i.IsActive).ToList();
+            ViewData["ownPage"] = false;
+        }
+        if (user != null && user.Id != ownerId && user.Role == Role.Student)
+            ViewData["visitor"] = user;
+        internships = internships.Where(i =>
+        {
+            return i.Title.Contains(filterRequest.ComparisonString ?? "") &&
+                   i.Topics.Intersect(filterRequest.Topics.Keys.
+                           Where(key => filterRequest.Topics[key])).Any();
+        }).ToList();
+        filterRequest.Internships = internships;
+        return PartialView("_FilterInternshipsPartial", filterRequest);
+    }
+
     [AcceptVerbs("GET")]
     [Route("projects/{id}")]
     public async Task<IActionResult> RepresentProject(string id)
@@ -55,7 +95,7 @@ public class HomeController : Controller
     }
 
     [NonAction]
-    private async Task<User> GetCurrentUser()
+    private async Task<User?> GetCurrentUser()
     {
         var collection = _repository.GetCollection<User>();
         var mail = User.FindFirstValue(ClaimTypes.Email);

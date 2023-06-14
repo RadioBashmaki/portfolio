@@ -1,11 +1,15 @@
-﻿const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-tooltipTriggerList.forEach(trigger => {
-    trigger.addEventListener("click", preventFocus)
-});
+﻿$(document).ready(initTooltips)
+
+function initTooltips(){
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    tooltipTriggerList.forEach(trigger => {
+        new bootstrap.Tooltip(trigger);
+        trigger.removeEventListener("click", preventFocus);
+        trigger.addEventListener("click", preventFocus)
+    });
+}
 
 function preventFocus(event) {
-    console.log("fired")
     if (event.relatedTarget) {
         event.relatedTarget.focus();
     } else {

@@ -1,1 +1,89 @@
-﻿
+﻿@model RepresentativeWallRepresentation
+
+@{
+    ViewData["Title"] = "Стена";
+}
+
+<div class="bg my-projects-bg d-flex align-items-center">
+    <div class="container">
+        <div class="representative-wall-container">
+            <div class="row">
+                <div class="col-3 offset-1">
+                    <div class="representative-wall-info-container">
+                        <div class="representative-wall-info-container__avatar-container">
+                            <img class="avatar" src="@Url.Action("GetUsersAvatar", "Account", new { id = Model.User.Id })" alt>
+                        </div>
+                        <div class="representative-wall-info-container__name-container">
+                            <span>@(Model.User.PersonalData.Name ?? "Имя (не указано)") @(Model.User.PersonalData.Surname ?? "Фамилия (не указано)")</span>
+                        </div>
+                        <div class="representative-wall-info-container__city-container d-flex align-items-center">
+                            <img class="data-icon" src="@Url.Content("~/img/svg/map-mark-icon.svg")" alt>
+                            <span>@(Model.User.PersonalData.City ?? "Город (не указано)")</span>
+                        </div>
+                        <div class="representative-wall-info-container__highlighted">
+                            <span class="representative-wall-info-container__highlighted__title">Представитель</span>
+                            <span class="representative-wall-info-container__highlighted__company-name">
+                                @(Model.User.PersonalData.Company.Name ?? "Название компании (не указано)")
+                            </span>
+                            <div class="representative-wall-info-container__highlighted__company-desc">
+                                @(Model.User.PersonalData.Company.Description ?? "Описание компании (не указано)")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-7">
+                    <div class="representative-wall-internships-container">
+                        <div class="representative-wall-internships-container__title-container d-flex justify-content-between">
+                            <span class="representative-wall-internships-container__title-container__title">Стажировки</span>
+                            <span class="representative-wall-internships-container__title-container__internships-count">Найдено: <span id="filtered-items-count">@Model.FilterInternshipsRequest.Internships.Count</span></span>
+                        </div>
+                        <div class="representative-wall-internships-container__search-bar">
+                            <form id="filter-form" method="post" asp-action="FilterInternships" asp-route-ownerId="@Model.User.Id">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <img id="search-btn" class="representative-wall-internships-container__search-bar__search-icon" src="@Url.Content("~/img/svg/search-icon-1.svg")" alt>
+                                        <input asp-for="FilterInternshipsRequest.ComparisonString" type="text" class="search-input primary-text" placeholder="Поиск">
+                                    </div>
+                                    <div class="d-flex align-items-center representative-wall-internships-container__search-bar__topics" id="open-topic-dropdown">
+                                        <span>Категории</span>
+                                        <img src="@Url.Content("~/img/svg/arrow-right.svg")" alt>
+                                    </div>
+                                </div>
+                                <div id="topic-dropdown-container" class="d-none">
+                                    <div class="d-flex w-100 mt-2 mb-3">
+                                        <div class="divider-thin w-75 mx-auto"></div>
+                                    </div>
+                                    <div class="dropdown-topics-list-container active">
+                                        <div class="dropdown-topics">
+                                            @foreach (var topic in Enum.GetValues<Topic>())
+                                            {
+                                                var desc = topic.GetDescription()!;
+                                                <div class="topic-checkbox-container">
+                                                    <input type="checkbox" class="topic-checkbox" asp-for="FilterInternshipsRequest.Topics[topic]">
+                                                    <label asp-for="FilterInternshipsRequest.Topics[topic]" style="background: @desc.HexColor">@desc.ShortName</label>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="d-flex w-100 my-2">
+                            <div class="divider-thin w-75 mx-auto"></div>
+                        </div>
+                        <div id="filtered-items-container" class="representative-wall-internships-container__internships-container">
+                            @Html.DisplayFor(model => model.FilterInternshipsRequest.Internships)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/home/avatarPlaceholderManager.js" asp-append-version="true"></script>
+    <script src="~/js/home/topicTabManager.js" asp-append-version="true"></script>
+    <script src="~/js/home/filterFormManager.js" asp-append-version="true"></script>
+}

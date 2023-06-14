@@ -1,0 +1,34 @@
+﻿@model Internship
+
+@{
+    var attrs = "";
+    if ((bool)ViewData["ownPage"]!)
+    {
+        attrs = $"href={Url.Action("EditInternship", "Internships", new { id = Model.Id })} data-bs-toggle=tooltip data-bs-placement=top data-bs-title=Редактировать";
+    }
+}
+
+<a href="#" class="internship d-block text-decoration-none filtered-item">
+    <div class="internship__info d-flex align-items-center justify-content-between h-100">
+        <object class="h-100">
+            <a @(attrs) class="d-flex flex-column justify-content-between text-decoration-none h-100">
+                <div class="d-flex align-items-center">
+                    <span class="internship__info__title">@Model.Title</span>
+                    <div class="internship__info__topics-container d-flex">
+                        @foreach (var topic in Model.Topics)
+                        {
+                            var desc = topic.GetDescription()!;
+                            <span class="my-projects-list-container__project__topic-display" style="background: @desc.HexColor"></span>
+                        }
+                    </div>
+                </div>
+                <div class="internship__info__creation-date">
+                    @Model.CreationDate.ToString("dd.MM.yyyy")
+                </div>
+            </a>
+        </object>
+        <div class="internship__info__experience d-flex align-items-center h-100">
+            <span>Опыт: @(Model.Experience == Experience.Demanded ? "требуется" : "не требуется")</span>
+        </div>
+    </div>
+</a>

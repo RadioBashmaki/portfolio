@@ -1128,3 +1128,198 @@ header {
     margin-right: 5px;
 }
 
+/* representative wall page styles */
+.representative-wall-container{
+    margin: 50px 0;
+}
+
+.representative-wall-info-container, .representative-wall-internships-container{
+    background: white;
+    box-shadow: 0 4px 6px 2px rgba(34, 60, 80, 0.2);
+    min-height: calc(100vh - 165px);
+    border-radius: 25px;
+    padding: 20px;
+}
+
+.representative-wall-info-container__avatar-container{
+    margin-top: 10px;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.representative-wall-info-container__avatar-container > img{
+    width: 150px;
+    aspect-ratio: 1 / 1;
+    border-radius: 50% 50%;
+    outline: #2e5cff solid 1px;
+    outline-offset: 2px;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.representative-wall-info-container__name-container, .representative-wall-info-container__city-container{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+}
+
+.representative-wall-info-container__name-container{
+    margin-top: 20px;
+}
+
+.representative-wall-info-container__name-container > span{
+    text-align: center;
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 31px;
+    letter-spacing: 0.05em;
+    color: #212326;
+}
+
+.representative-wall-info-container__city-container > span{
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    color: #898989;
+}
+
+.representative-wall-info-container__city-container > img{
+    margin-right: 5px;
+}
+
+.representative-wall-info-container__highlighted{
+    border-radius: 25px;
+    margin-top: 30px;
+    border: #CCCCCC solid 2px;
+    background: #F5F5F5;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+
+.representative-wall-info-container__highlighted__title{
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    color: #494949;
+}
+
+.representative-wall-info-container__highlighted__company-name{
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+    color: #212326;
+    margin-top: 5px;
+    text-align: center;
+}
+
+.representative-wall-info-container__highlighted__company-desc{
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    color: #898989;
+    height: 130px;
+    width: 100%;
+    margin-top: 5px;
+    word-wrap: break-word;
+    overflow-y: auto;
+}
+
+.representative-wall-internships-container__title-container__title{
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    color: #212326;
+}
+
+.representative-wall-internships-container__title-container__internships-count{
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+    color: #999999;
+}
+
+.representative-wall-internships-container__search-bar{
+    padding: 20px;
+    border-radius: 25px;
+    border: #CCCCCC 2px solid;
+    margin-top: 15px;
+}
+
+.representative-wall-internships-container__search-bar__search-icon{
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+.representative-wall-internships-container__search-bar__topics{
+    cursor: pointer;
+    user-select: none;
+    text-decoration: none;
+}
+
+.representative-wall-internships-container__search-bar__topics > span{
+    margin-right: 5px;
+}
+
+.representative-wall-internships-container__internships-container{
+    height: 390px;
+    overflow-y: auto;
+}
+
+.representative-wall-internships-container__internships-container::-webkit-scrollbar{
+    display: none;
+}
+
+.internship{
+    padding: 12px 15px;
+    height: 70px;
+    border-radius: 25px;
+    border: #CCCCCC 2px solid;
+}
+
+.internship__info{
+    margin-left: 10px;
+}
+
+.internship__info__title{
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+    color: #000000;
+    margin-right: 5px;
+}
+
+.internship__info__creation-date{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    color: #898989;
+}
+
+.internship__info__topics-container > span{
+    margin: 0 3px;
+}
+
+.divider-thin{
+    border: 1px solid #D9D9D9;
+}
+
+.internship__info__experience{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    color: #898989;
+}
+
+.representative-wall-internships-container__internships-container > a:not(:last-of-type){
+    margin-bottom: 5px;
+}
+
+
+
+
+
