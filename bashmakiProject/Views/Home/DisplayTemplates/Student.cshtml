@@ -1,0 +1,23 @@
+﻿@model Student
+
+@{
+    var age = Model.User.PersonalData.DateOfBirth != null ? (DateTime.Now - Model.User.PersonalData.DateOfBirth).Value.Days / 365 : -1;
+}
+
+<a asp-action="Wall" asp-route-id="@Model.User.Id" class="my-projects-list-container__project text-decoration-none filtered-item">
+    <div class="my-projects-list-container__project__info d-flex flex-column justify-content-between">
+        <div class="my-projects-list-container__project__title">
+            <span class="text-normal">
+                @(Model.User.PersonalData.Name ?? "Имя (не указано)") @(Model.User.PersonalData.Surname ?? "Фамилия (не указано)")<pre class="d-inline m-0"> </pre><span class="text-thin">@(age < 0 ? "Возраст (не указано)" : $"{age} лет")</span>
+            </span>
+        </div>
+        <div class="my-projects-list-container__project__creation-date">
+            <span class="text-thin">
+                @(Model.User.PersonalData.City ?? "Город (не указано)")
+            </span>
+        </div>
+    </div>
+    <div class="d-flex h-100 align-items-center ms-auto">
+        <span class="text-thin">@Model.ProjectCount проектов</span>
+    </div>
+</a>

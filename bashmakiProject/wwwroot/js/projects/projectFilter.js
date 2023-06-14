@@ -12,7 +12,8 @@ $topicsChoiceOpen.click(function() {
         $($topicDropdownContainer)[0].classList.add("active")
 })
 
-$setFilterButton.on("click", function(){
+$setFilterForm.on("submit", function(e){
+    e.preventDefault();
     $projectsContainer.empty();
     $projectsContainer.html("<div class='d-flex justify-content-center mt-5 w-100'><span class='loader'></span></div>")
     $.ajax({

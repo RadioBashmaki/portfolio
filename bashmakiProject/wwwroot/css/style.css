@@ -129,6 +129,33 @@ main {
     opacity: .8;
 }
 
+.text-thin{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    color: #898989;
+}
+
+.text-normal{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    display: flex;
+    align-items: center;
+
+    color: #000000;
+}
+
+.text-bold{
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+    display: flex;
+    align-items: center;
+
+    color: #000000;
+}
+
 .back-button {
     width: 35px;
     height: 35px;
@@ -668,6 +695,7 @@ header {
 
 .search-icon {
     background: url("../img/svg/search-icon-1.svg") no-repeat center;
+    border: none;
     margin-right: 12px;
     width: 30px;
     aspect-ratio: 1 / 1;

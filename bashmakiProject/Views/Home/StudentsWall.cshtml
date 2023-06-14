@@ -15,8 +15,7 @@
 }
 
 @functions{
-
-    public string GenerateGradient(List<Project> projects)
+    private string GenerateGradient(List<Project> projects)
     {
         var builder = new StringBuilder();
         builder.Append("90deg");
@@ -52,16 +51,16 @@
                         <div class="student-wall-info-container__hero-grad" style="background: linear-gradient(@GenerateGradient(projects))">
                             <div class="links-container">
                                 <img src="@Url.Content("~/img/svg/link-icon.svg")" class="chain-icon" alt>
-                                <a @(Model.PersonalData.Links.Vk == null ? "class=disabled" : "") target="_blank" href="@Model.PersonalData.Links.Vk">
+                                <a @(Model.PersonalData.Links?.Vk ?? "class=disabled") target="_blank" href="@Model.PersonalData.Links?.Vk">
                                     <img src="@Url.Content("~/img/svg/vk-icon.svg")" class="link-icon" alt>
                                 </a>
-                                <a @(Model.PersonalData.Links.Telegram == null ? "class=disabled" : "") target="_blank" href="@Model.PersonalData.Links.Telegram">
+                                <a @(Model.PersonalData.Links?.Telegram ?? "class=disabled") target="_blank" href="@Model.PersonalData.Links?.Telegram">
                                     <img src="@Url.Content("~/img/svg/tg-icon.svg")" class="link-icon" alt>
                                 </a>
-                                <a @(Model.PersonalData.Links.Github == null ? "class=disabled" : "") target="_blank" href="@Model.PersonalData.Links.Github">
+                                <a @(Model.PersonalData.Links?.Github ?? "class=disabled") target="_blank" href="@Model.PersonalData.Links?.Github">
                                     <img src="@Url.Content("~/img/svg/github-icon.svg")" class="link-icon" alt>
                                 </a>
-                                <a @(Model.PersonalData.Links.Discord == null ? "class=disabled" : "") target="_blank" href="@Model.PersonalData.Links.Discord">
+                                <a @(Model.PersonalData.Links?.Discord ?? "class=disabled") target="_blank" href="@Model.PersonalData.Links?.Discord">
                                     <img src="@Url.Content("~/img/svg/discord-icon.svg")" class="link-icon" alt>
                                 </a>
                             </div>

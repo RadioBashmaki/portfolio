@@ -3,7 +3,8 @@ const $setFilterForm = $("#filter-form");
 const $itemsCount = $("#filtered-items-count");
 const $filteredItemsContainer = $("#filtered-items-container");
 
-$setFilterButton.on("click", function(){
+$setFilterForm.on("submit", function(e){
+    e.preventDefault();
     $filteredItemsContainer.empty();
     $filteredItemsContainer.html("<div class='d-flex justify-content-center mt-5 w-100'><span class='loader'></span></div>")
     $.ajax({
