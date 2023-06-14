@@ -1086,6 +1086,19 @@ header {
     cursor: pointer;
 }
 
+.author-link{
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    text-decoration: underline #4B4A7F solid;
+    text-underline-offset: 2px;
+    color: #4B4A7F;
+}
+
+.author-link:visited{
+    color: #4B4A7F;
+}
+
 /* create internship page styles */
 
 .create-internship__exp-radio-container{

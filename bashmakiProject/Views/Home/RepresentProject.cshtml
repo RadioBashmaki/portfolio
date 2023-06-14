@@ -10,9 +10,12 @@
             <div class="col-md-8 offset-md-2 col-12">
                 <div class="form-container create-project-form-container">
                     <div class="create-project-form">
-                        <h4 class="create-project-form__title primary-text">
-                            @Model.Title
-                        </h4>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class="create-project-form__title primary-text">@Model.Title</span>
+                            <div class="d-flex align-items-center">
+                                <a class="author-link" asp-action="Wall" asp-route-id="@Model.UserId">Автор</a>
+                            </div>
+                        </div>
                         <hr class="form-divider">
                         <div class="create-project-form__topic-container">
                             <div class="create-project-form__topics-label">
