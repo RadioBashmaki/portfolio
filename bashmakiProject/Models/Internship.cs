@@ -13,6 +13,11 @@ public class Internship : MongoEntity
     public Experience Experience { get; set; }
     public Topic[] Topics { get; set; }
     public string Description { get; set; }
+    
+    [BsonDateTimeOptions(DateOnly = true)]
+    public DateTime CreationDate { get; set; }
+    
+    public bool IsActive { get; set; }
     public FileDescriptionDatabase[]? Files { get; set; }
 }
 

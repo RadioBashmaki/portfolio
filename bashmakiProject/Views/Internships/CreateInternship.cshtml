@@ -10,9 +10,13 @@
             <div class="col-md-8 offset-md-2 col-12">
                 <div class="form-container create-project-form-container">
                     <form method="post" asp-action="CreateInternship" data-new-file-path="@Url.Action("AddFile")" class="create-project-form" enctype="multipart/form-data">
-                        <h4 class="create-project-form__title primary-text">
-                            Создание стажировки
-                        </h4>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class="create-project-form__title primary-text">Создание стажировки</span>
+                            <div class="d-flex align-items-center">
+                                <input class="internship-is-active" type="checkbox" asp-for="IsActive" checked="@(Model?.IsActive ?? true)">
+                                <label asp-for="IsActive">Активна</label>
+                            </div>
+                        </div>
                         <hr class="form-divider">
                         <div asp-validation-summary="ModelOnly"></div>
                         <input type="text" class="form-control create-project-form__title-input w-50" asp-for="Title" placeholder="Название">

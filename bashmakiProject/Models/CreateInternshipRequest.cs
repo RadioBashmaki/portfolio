@@ -13,6 +13,8 @@ public class CreateInternshipRequest : IValidatableObject
     [Required(ErrorMessage = "Это обязательное поле")]
     [StringLength(5000)]
     public string Description { get; set; }
+
+    public bool IsActive { get; set; } = true;
     public FileDescription[]? FilesDescriptions { get; set; }
     
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

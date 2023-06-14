@@ -1091,3 +1091,40 @@ header {
 .create-internship__exp-radio-container{
     margin-top: 25px;
 }
+
+.internship-is-active{
+    position: absolute;
+    opacity: 0;
+}
+
+.internship-is-active + label{
+    font-size: 16px;
+    line-height: 19px;
+    color: #898989;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.internship-is-active + label:before{
+    content: "";
+    width: 30px;
+    height: 30px;
+    border: #BAB4B4 solid 1px;
+    border-radius: 50% 50%;
+    margin-right: 5px;
+}
+
+.internship-is-active:checked + label:before{
+    content: "";
+    background: url("../img/svg/check-mark.svg") no-repeat center;
+    width: 30px;
+    height: 30px;
+    border: #BAB4B4 solid 1px;
+    border-radius: 50% 50%;
+    margin-right: 5px;
+}
+

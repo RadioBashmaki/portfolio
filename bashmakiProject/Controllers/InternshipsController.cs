@@ -17,14 +17,14 @@ public class InternshipsController : Controller
     {
         _repository = repo;
     }
-    
+
     [HttpGet("new")]
     [Authorize(Policy = "OnlyForRepresentatives")]
     public IActionResult CreateInternship()
     {
         return View();
     }
-    
+
     [HttpPost("new")]
     [Authorize(Policy = "OnlyForRepresentatives")]
     public async Task<IActionResult> CreateInternship([FromForm] CreateInternshipRequest request)
@@ -36,7 +36,7 @@ public class InternshipsController : Controller
                 ModelState.AddModelError("", $"Отсутствует файл {i + 1}");
             return View(request);
         }
-            
+
         var user = await GetCurrentUser();
         var internshipsCollection = _repository.GetCollection<Internship>();
         var internship = new Internship
@@ -45,6 +45,8 @@ public class InternshipsController : Controller
             Title = request.Title,
             Description = request.Description,
             Experience = request.Experience!.Value,
+            IsActive = request.IsActive,
+            CreationDate = DateTime.Today,
             Topics = request.Topics.Keys.Where(x => request.Topics[x]).ToArray(),
             Files = request.FilesDescriptions?.Select(desc => new FileDescriptionDatabase
             {
@@ -58,7 +60,7 @@ public class InternshipsController : Controller
         await internshipsCollection.InsertOneAsync(internship);
         return View(request);
     }
-    
+
     [Authorize(Policy = "OnlyForRepresentatives")]
     [HttpPost("newFile")]
     public IActionResult AddFile([Bind("FilesDescriptions")] CreateInternshipRequest createRequest)
@@ -66,7 +68,7 @@ public class InternshipsController : Controller
         ViewData["index"] = createRequest.FilesDescriptions?.Length ?? 0;
         return PartialView("_AddFilePartial");
     }
-    
+
     [NonAction]
     private async Task<User> GetCurrentUser()
     {
@@ -79,7 +81,7 @@ public class InternshipsController : Controller
             .FirstOrDefaultAsync();
         return user;
     }
-    
+
     [NonAction]
     private async Task<byte[]> FormFileToByteArray(IFormFile formFile)
     {
