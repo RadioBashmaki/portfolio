@@ -1,0 +1,27 @@
+﻿@model Internship
+
+<a asp-action="RepresentInternship" asp-route-id="@Model.Id" class="my-projects-list-container__project text-decoration-none filtered-item">
+    <div class="my-projects-list-container__project__info d-flex flex-column justify-content-between">
+        <div class="d-flex">
+            <span class="text-normal">
+                @Model.Title
+            </span>
+            <div class="d-flex align-items-center">
+                @foreach (var topic in Model.Topics)
+                {
+                    var desc = topic.GetDescription()!;
+                    <span class="my-projects-list-container__project__topic-display" style="background: @desc.HexColor"></span>
+                }
+            </div>
+        </div>
+        <div class="my-projects-list-container__project__creation-date">
+            <span class="text-thin">
+                @(Model.CompanyName ?? "Компания (не указано)")
+            </span>
+        </div>
+    </div>
+    <div class="d-flex h-100 align-items-center ms-auto">
+        <span class="text-thin">Опыт: @(Model.Experience == Experience.Demanded ? "требуется" : "не требуется")</span>
+    </div>
+</a>
+

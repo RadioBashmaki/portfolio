@@ -31,7 +31,7 @@ public class PersonalData
     public string? City { get; set; }
     [StringLength(50, ErrorMessage = "Слишком длинная строка")]
     public string? Career { get; set; }
-    public Company Company { get; set; }
+    public Company? Company { get; set; }
     [StringLength(100, ErrorMessage = "Слишком длинная строка")]
     public string? Education { get; set; }
     [StringLength(350, ErrorMessage = "Слишком длинная строка")]

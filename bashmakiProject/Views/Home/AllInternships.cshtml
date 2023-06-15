@@ -1,0 +1,57 @@
+﻿@model FilterInternshipsRequest
+
+@{
+    ViewData["Title"] = "Все стажировки";
+}
+
+<div class="bg my-projects-bg d-flex align-items-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-8 col-12 offset-lg-3 offset-md-2">
+                <div class="form-container my-projects-list-container pb-5">
+                    <form id="filter-form" asp-action="FilterAllInternships" method="post">
+                        <div class="my-projects-list-container__search-panel d-flex align-items-center justify-content-between flex-wrap px-3">
+                            <button id="search-btn" class="search-icon"></button>
+                            <input type="text" asp-for="ComparisonString" class="search-input primary-text" placeholder="Поиск">
+                            <span id="open-topic-dropdown" class="topics-choice-open">Категории</span>
+                        </div>
+                        <div id="topic-dropdown-container" class="d-none px-3 pb-1">
+                            <div class="dropdown-topics-list-container active">
+                                <div class="dropdown-topics">
+                                    @foreach (var topic in Enum.GetValues<Topic>())
+                                    {
+                                        var desc = topic.GetDescription()!;
+                                        <div class="topic-checkbox-container">
+                                            <input type="checkbox" class="topic-checkbox" asp-for="Topics[topic]">
+                                            <label asp-for="Topics[topic]" style="background: @desc.HexColor">@desc.ShortName</label>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="my-projects-list-container__found-panel d-flex justify-content-between">
+                            <span>
+                                Найдено: <span id="filtered-items-count" class="projects-count">@Model.Internships.Count.ToString()</span>
+                            </span>
+                            <div>
+                                <input class="internship-is-active experience-demanded" type="checkbox" asp-for="ExperienceDemanded">
+                                <label class="text-thin" asp-for="ExperienceDemanded">Требуется опыт</label>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="filtered-items-container" class="my-projects-list-container__projects-list justify-content-center">
+                        @foreach (var internship in Model.Internships)
+                        {
+                            @Html.DisplayFor(model => internship, "InternshipAllInternships")
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/home/filterFormManager.js" asp-append-version="true"></script>
+    <script src="~/js/home/topicTabManager.js" asp-append-version="true"></script>
+}

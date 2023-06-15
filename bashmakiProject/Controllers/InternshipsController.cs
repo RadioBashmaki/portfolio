@@ -47,6 +47,7 @@ public class InternshipsController : Controller
             Experience = request.Experience!.Value,
             IsActive = request.IsActive,
             CreationDate = DateTime.Today,
+            CompanyName = user.PersonalData.Company?.Name,
             Topics = request.Topics.Keys.Where(x => request.Topics[x]).ToArray(),
             Files = request.FilesDescriptions?.Select(desc => new FileDescriptionDatabase
             {

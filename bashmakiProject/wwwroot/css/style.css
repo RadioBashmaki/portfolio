@@ -845,7 +845,7 @@ header {
     border-radius: 50% 50%;
     width: 12px;
     margin: 0 2px;
-    aspect-ratio: 1 / 1;
+    height: 12px;
     overflow: hidden;
 }
 
@@ -1169,8 +1169,6 @@ header {
 .internship-is-active:checked + label:before{
     content: "";
     background: url("../img/svg/check-mark.svg") no-repeat center;
-    width: 30px;
-    height: 30px;
     border: #BAB4B4 solid 1px;
     border-radius: 50% 50%;
     margin-right: 5px;
@@ -1365,6 +1363,11 @@ header {
 
 .representative-wall-internships-container__internships-container > a:not(:last-of-type){
     margin-bottom: 5px;
+}
+
+.internship-is-active.experience-demanded + label:before{
+    width: 25px;
+    height: 25px;
 }
 
 

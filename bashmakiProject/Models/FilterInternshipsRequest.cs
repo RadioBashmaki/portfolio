@@ -4,6 +4,7 @@ public class FilterInternshipsRequest
 {
     public string? ComparisonString { get; set; }
     public Dictionary<Topic, bool> Topics { get; set; }
+    public bool ExperienceDemanded { get; set; }
     public List<Internship> Internships { get; set; }
 
     public FilterInternshipsRequest()

@@ -17,6 +17,8 @@ public class Internship : MongoEntity
     [BsonDateTimeOptions(DateOnly = true)]
     public DateTime CreationDate { get; set; }
     
+    public string CompanyName { get; set; }
+    
     public bool IsActive { get; set; }
     public FileDescriptionDatabase[]? Files { get; set; }
     public InternshipRequest[] InternshipRequests { get; set; }

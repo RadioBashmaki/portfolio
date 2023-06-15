@@ -153,7 +153,7 @@ public class HomeController : Controller
         var collection = _repository.GetCollection<User>();
         var substr = filterRequest.ComparisonString ?? "";
         var filter = Builders<User>.Filter.Where(user => user.Role == Role.Student &&
-                                                         (string.IsNullOrEmpty(substr) || 
+                                                         (string.IsNullOrEmpty(substr) ||
                                                           user.PersonalData.Name.ToLower().Contains(substr) ||
                                                           user.PersonalData.Surname.ToLower().Contains(substr) ||
                                                           user.PersonalData.About.ToLower().Contains(substr) ||
@@ -170,16 +170,32 @@ public class HomeController : Controller
         });
         return PartialView("_FilterStudentsPartial", new FilterStudentsRequest { Students = studentProjects.ToList() });
     }
-
-    [NonAction]
-    private bool CheckUser(User user, string substring)
+    
+    [Authorize]
+    [HttpGet("internships")]
+    public async Task<IActionResult> AllInternships()
     {
-        return user.Role == Role.Student && (string.IsNullOrEmpty(substring) || (user.PersonalData.Name?.Contains(substring) ?? false) ||
-                                             (user.PersonalData.Surname?.Contains(substring) ?? false) ||
-                                             (user.PersonalData.About?.Contains(substring) ?? false) ||
-                                             (user.PersonalData.Education?.Contains(substring) ?? false) ||
-                                             (user.PersonalData.Career?.Contains(substring) ?? false) ||
-                                             (user.PersonalData.City?.Contains(substring) ?? false));
+        var collection = _repository.GetCollection<Internship>();
+        var internships = await collection.Find(i => i.IsActive).ToListAsync();
+        return View(new FilterInternshipsRequest { Internships = internships });
+    }
+
+    [Authorize]
+    [HttpPost("internships/filter")]
+    public async Task<IActionResult> FilterAllInternships(
+        [Bind("ComparisonString", "Topics", "ExperienceDemanded")]
+        FilterInternshipsRequest filterRequest)
+    {
+        var collection = _repository.GetCollection<Internship>();
+        var filter = Builders<Internship>.Filter.Where(i =>
+            i.IsActive && (filterRequest.ExperienceDemanded && i.Experience == Experience.Demanded
+                           || !filterRequest.ExperienceDemanded && i.Experience == Experience.NotDemanded) &&
+            (string.IsNullOrEmpty(filterRequest.ComparisonString) ||
+             i.Title.ToLower().Contains(filterRequest.ComparisonString) ||
+             i.Description.ToLower().Contains(filterRequest.ComparisonString) ||
+             i.CompanyName.ToLower().Contains(filterRequest.ComparisonString)));
+        var internships = await collection.Find(filter).ToListAsync();
+        return PartialView("_FilterAllInternshipsPartial", new FilterInternshipsRequest { Internships = internships });
     }
 
     [NonAction]

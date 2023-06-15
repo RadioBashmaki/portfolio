@@ -41,7 +41,7 @@
                             <form id="filter-form" method="post" asp-action="FilterInternships" asp-route-ownerId="@Model.User.Id">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="d-flex align-items-center">
-                                        <img id="search-btn" class="representative-wall-internships-container__search-bar__search-icon" src="@Url.Content("~/img/svg/search-icon-1.svg")" alt>
+                                        <button id="search-btn" class="representative-wall-internships-container__search-bar__search-icon search-icon"></button>
                                         <input asp-for="FilterInternshipsRequest.ComparisonString" type="text" class="search-input primary-text" placeholder="Поиск">
                                     </div>
                                     <div class="d-flex align-items-center representative-wall-internships-container__search-bar__topics" id="open-topic-dropdown">

@@ -1,0 +1,6 @@
+﻿@model FilterInternshipsRequest
+
+@foreach (var internship in Model.Internships)
+{
+    @Html.DisplayFor(model => internship, "InternshipAllInternships")
+}
