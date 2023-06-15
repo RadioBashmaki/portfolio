@@ -25,11 +25,11 @@
             </div>
             <div class="role-radio register-form__role-radio-cont">
                 <div class="register-form__custom-radio-cont">
-                    <input class="custom-radio" type="radio" asp-for="Role" id="student" value="@Role.Student">
+                    <input class="custom-radio" type="radio" asp-for="Role" id="student" value="@Role.Student" checked="@(Context.Request.Query["role"] == "student")">
                     <label for="student">Студент</label>
                 </div>
                 <div class="register-form__custom-radio-cont">
-                    <input type="radio" class="custom-radio" asp-for="Role" id="representative" value="@Role.Representative">
+                    <input type="radio" class="custom-radio" asp-for="Role" id="representative" value="@Role.Representative" checked="@(Context.Request.Query["role"] == "representative")">
                     <label for="representative">Представитель</label>
                 </div>
                 <span class="m-0 d-block" asp-validation-for="Role"></span>

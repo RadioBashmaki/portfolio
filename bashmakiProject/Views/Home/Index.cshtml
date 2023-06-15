@@ -1,10 +1,93 @@
-﻿@using System.Security.Claims
-@{
+﻿@{
     ViewData["Title"] = "Главная страница";
 }
 
-<p>Пользователь авторизован: @ViewBag.User.Identity.IsAuthenticated</p>
-@if (ViewBag.User.Identity.IsAuthenticated)
-{
-    <p>Email: @ViewBag.User.FindFirst(ClaimTypes.Email).Value;</p>
-}
+<div class="main-page-bg">
+    <div class="main-page-content">
+        <div class="main-page-content__hero">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-lg-7 col-md-10 d-flex align-items-center main-page-content__hero__title">
+                        <h1>
+                            КОНСТУКТОР
+                            ЭЛЕКТРОННОГО ПОРТФОЛИО
+                        </h1>
+                    </div>
+                    <div class="col-10 col-lg-4 col-md-6 main-page-content__hero__registration-cards d-flex justify-content-between">
+                        <a asp-action="Register" asp-controller="Account" asp-route-role="student" class="text-decoration-none main-page-content__hero__registration-cards__card-left gradient-card d-flex flex-column justify-content-around align-items-center">
+                            <img src="~/img/svg/card-edu-icon.svg" alt>
+                            <div class="text-card">
+                                <span>я <b>ученик</b></span>
+                            </div>
+                        </a>
+                        <a asp-action="Register" asp-controller="Account" asp-route-role="representative" class="main-page-content__hero__registration-cards__card-right text-decoration-none gradient-card d-flex flex-column justify-content-around align-items-center">
+                            <img src="~/img/svg/card-repr-icon.svg" alt>
+                            <div class="text-card">
+                                <span>я <b>представитель</b></span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-page-whitespace-1">
+            <button class="topics-representation border-0 bg-transparent bg-transparent" data-bs-custom-class="custom-popover" data-bs-toggle="popover" data-bs-container="body" data-bs-trigger="focus" data-bs-placement="left" data-bs-title="Описание сервиса" data-bs-content="На нашем сервисе вы сможете выбирать тематику своих проектов и стажировок для удобной навигации. У нас есть 5 категорий: Разработка, Дизайн, Веб-технологии, 3D, Прочее. Так же, в профиле ученика есть полоса, градиент которой показывает, какие проекты есть у этого пользователя.">
+                @foreach (var topic in Enum.GetValues<Topic>())
+                {
+                    var desc = topic.GetDescription()!;
+                    <span class="my-projects-list-container__project__topic-display" style="background: @desc.HexColor"></span>
+                }
+            </button>
+        </div>
+        <div class="main-page-content__student-proposal">
+            <div class="container mh-100 h-100">
+                <div class="row mh-100 h-100">
+                    <div class="col-4 mh-100 h-100 d-flex align-items-center justify-content-center">
+                        <img src="~/img/svg/proposal-edu-icon.svg" class="w-75 ratio-1x1" alt>
+                    </div>
+                    <div class="col-md-7 col-8 d-flex mh-100 h-100 flex-column justify-content-between py-5 align-items-start">
+                        <div>
+                            <h2 class="main-page-content__student-proposal__title mb-4">
+                                ИЩЕШЬ СТАЖИРОВКУ ИЛИ ПРАКТИКУ?
+                            </h2>
+                            <div class="main-page-content__student-proposal__content mb-5">
+                                <span>
+                                    Сервис MyFolder поможет тебе найти подходящее предложение, а также позволит хранить все достижения в одном месте, чтобы представители компаний смогли увидеть твои самые лучшие работы.
+                                </span>
+                            </div>
+                        </div>
+                        <a asp-action="Register" asp-controller="Account" asp-route-role="student" class="main-page-content__student-proposal__button button-bg-transparent text-decoration-none">
+                            Зарегистрироваться
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-page-content__representative-proposal">
+            <div class="container h-100 mh-100">
+                <div class="row h-100 mh-100">
+                    <div class="offset-md-1 offset-sm-0 col-md-7 col-8 d-flex mh-100 h-100 flex-column justify-content-between py-5 align-items-end">
+                        <div>
+                            <h2 class="main-page-content__representative-proposal__title mb-4">
+                                ОРГАНИЗУЕТЕ СТАЖИРОВКУ ИЛИ ПРАКТИКУ?
+                            </h2>
+                            <div class="main-page-content__representative-proposal__content mb-5">
+                                <span>
+                                    С помощью сервиса MyFolder вы сможете отыскать хороших кандидатов, сравнить их портфолио и отобрать из них наиболее подходящих.
+                                </span>
+                            </div>
+                        </div>
+                        <a asp-action="Register" asp-controller="Account" asp-route-role="representative" class="main-page-content__representative-proposal__button button-bg-transparent text-decoration-none">
+                            Зарегистрироваться
+                        </a>
+                    </div>
+                    <div class="col-4 d-flex align-items-center justify-content-center mh-100 h-100">
+                        <img src="~/img/svg/proposal-repr-icon.svg" class="w-50" alt>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-page-content__bottom-wave">
+        </div>
+    </div>
+</div>

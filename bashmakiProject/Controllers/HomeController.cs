@@ -20,7 +20,6 @@ public class HomeController : Controller
     [HttpGet("index")]
     public IActionResult Index()
     {
-        ViewBag.User = User;
         return View();
     }
 
