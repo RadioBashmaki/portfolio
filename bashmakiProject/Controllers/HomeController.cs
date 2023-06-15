@@ -133,7 +133,8 @@ public class HomeController : Controller
         await collection.UpdateOneAsync(filter, update);
         return RedirectToAction("Wall", new { id = internship.UserId });
     }
-
+    
+    [Authorize]
     [HttpGet("students")]
     public async Task<IActionResult> AllStudents()
     {
@@ -149,6 +150,7 @@ public class HomeController : Controller
         return View(new FilterStudentsRequest { Students = studentProjects.ToList() });
     }
 
+    [Authorize]
     [HttpPost("students/filter")]
     public async Task<IActionResult> FilterStudents([Bind("ComparisonString")] FilterStudentsRequest filterRequest)
     {
