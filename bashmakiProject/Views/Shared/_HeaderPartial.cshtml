@@ -1,0 +1,78 @@
+﻿@using System.Security.Claims
+
+@{
+    var name = User.FindFirstValue(ClaimTypes.Name);
+    var surname = User.FindFirstValue(ClaimTypes.Surname);
+    var displayName = string.IsNullOrEmpty(name) || string.IsNullOrEmpty(surname)
+        ? User.FindFirstValue(ClaimTypes.Email) : $"{name} {surname}";
+}
+
+<header>
+    <div class="container header-container">
+        <div class="row h-100">
+            <div class="col-2 me-auto d-flex justify-content-start align-items-center">
+                <a asp-controller="Home" asp-action="Index" class="logo">
+                    <img src="~/img/svg/logo.svg" alt="...">
+                </a>
+            </div>
+            @if (User.Identity is {IsAuthenticated: true })
+            {
+                <div class="col-3 d-flex align-items-center justify-content-end">
+                    <div class="custom-dropdown personal-data-dropdown">
+                        <div class="custom-dropdown__visible personal-data-dropdown__visible">
+                            <div class="personal-data-dropdown__visible__content d-flex align-items-center justify-content-end">
+                                <img src="~/img/svg/personal-data-icon.svg" class="me-2" alt>
+                                <span>@displayName</span>
+                            </div>
+                        </div>
+                        <div class="custom-dropdown__invisible personal-data-dropdown__invisible">
+                            <div class="personal-data-dropdown__invisible__title d-flex align-items-center">
+                                <img class="me-2" src="~/img/svg/personal-data-icon-green.svg" alt>
+                                <span>@displayName</span>
+                            </div>
+                            <div class="divider-thin my-3"></div>
+                            <a asp-action="Profile" asp-controller="Account" class="personal-data-dropdown__invisible__link d-flex align-items-center">
+                                <span class="me-auto">Личные данные</span>
+                                <img src="~/img/svg/arrow-right.svg" alt>
+                            </a>
+                            <a asp-action="Wall" asp-controller="Home" class="personal-data-dropdown__invisible__link d-flex align-items-center">
+                                <span class="me-auto">Мой профиль</span>
+                                <img src="~/img/svg/arrow-right.svg" alt>
+                            </a>
+                            @if (User.IsInRole("Student"))
+                            {
+                                <a asp-action="MyProjects" asp-controller="Projects" class="personal-data-dropdown__invisible__link d-flex align-items-center">
+                                    <span class="me-auto">Моё портфолио</span>
+                                    <img src="~/img/svg/arrow-right.svg" alt>
+                                </a>
+                                <a asp-action="AllInternships" asp-controller="Home" asp-route-my="true" class="personal-data-dropdown__invisible__link d-flex align-items-center">
+                                    <span class="me-auto">Мои стажировки</span>
+                                    <img src="~/img/svg/arrow-right.svg" alt>
+                                </a>
+                            }
+                            <a asp-action="AllStudents" asp-controller="Home" class="personal-data-dropdown__invisible__link d-flex align-items-center">
+                                <span class="me-auto">Все стажировки</span>
+                                <img src="~/img/svg/arrow-right.svg" alt>
+                            </a>
+                            <a asp-action="AllInternships" asp-controller="Home" class="personal-data-dropdown__invisible__link d-flex align-items-center">
+                                <span class="me-auto">Все представители</span>
+                                <img src="~/img/svg/arrow-right.svg" alt>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="col-1 d-flex justify-content-end align-items-center">
+                <div class="header-vertical-line"></div>
+                @if (User.Identity is {IsAuthenticated: true })
+                {
+                    <a asp-controller="Account" asp-action="Logout" class="header-enter-button">Выйти</a>
+                }
+                else
+                {
+                    <a asp-controller="Account" asp-action="Auth" class="header-enter-button">Войти</a>
+                }
+            </div>
+        </div>
+    </div>
+</header>

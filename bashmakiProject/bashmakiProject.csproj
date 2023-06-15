@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="html" />
       <Folder Include="wwwroot\js\internships" />
     </ItemGroup>
 

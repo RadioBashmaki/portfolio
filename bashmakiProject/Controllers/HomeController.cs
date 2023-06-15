@@ -37,14 +37,16 @@ public class HomeController : Controller
             return NotFound();
         if (user!.Role == Role.Student)
             return View("StudentsWall", user);
-        var internships = await _repository.GetCollection<Internship>().Find(i => i.UserId == user.Id).ToListAsync();
+        var filter = Builders<Internship>.Filter.Eq(i => i.UserId, user.Id);
         ViewData["ownPage"] = true;
         if (currentUser == null || user.Id != currentUser.Id)
         {
-            internships = internships.Where(i => i.IsActive).ToList();
+            filter &= Builders<Internship>.Filter.Eq(i => i.IsActive, true);
             ViewData["ownPage"] = false;
         }
-
+        
+        var internships = await _repository.GetCollection<Internship>().Find(filter).ToListAsync();
+        
         if (currentUser != null && user.Id != currentUser.Id && currentUser.Role == Role.Student)
             ViewData["student"] = currentUser;
 
@@ -62,21 +64,22 @@ public class HomeController : Controller
     {
         var filterRequest = representation.FilterInternshipsRequest;
         var user = await GetCurrentUser();
-        var internships = await _repository.GetCollection<Internship>().Find(i => i.UserId == ownerId).ToListAsync();
+        var filter = Builders<Internship>.Filter.Eq(i => i.UserId, ownerId);
         ViewData["ownPage"] = true;
         if (user == null || user.Id != ownerId)
         {
-            internships = internships.Where(i => i.IsActive).ToList();
+            filter &= Builders<Internship>.Filter.Eq(i => i.IsActive, true);
             ViewData["ownPage"] = false;
         }
 
         if (user != null && user.Id != ownerId && user.Role == Role.Student)
             ViewData["visitor"] = user;
-        internships = internships.Where(i =>
-        {
-            return i.Title.Contains(filterRequest.ComparisonString ?? "") &&
-                   i.Topics.Intersect(filterRequest.Topics.Keys.Where(key => filterRequest.Topics[key])).Any();
-        }).ToList();
+        var topics = filterRequest.Topics.Keys.Where(key =>
+            filterRequest.Topics[key]);
+        filter &= Builders<Internship>.Filter.Where(i => i.Title.Contains(filterRequest.ComparisonString ?? "") &&
+                                                         i.Topics.Intersect(topics).Any());
+        
+        var internships = await _repository.GetCollection<Internship>().Find(filter).ToListAsync();
         filterRequest.Internships = internships;
         return PartialView("_FilterInternshipsPartial", filterRequest);
     }
@@ -169,13 +172,17 @@ public class HomeController : Controller
         });
         return PartialView("_FilterStudentsPartial", new FilterStudentsRequest { Students = studentProjects.ToList() });
     }
-    
+
     [Authorize]
     [HttpGet("internships")]
     public async Task<IActionResult> AllInternships()
     {
         var collection = _repository.GetCollection<Internship>();
-        var internships = await collection.Find(i => i.IsActive).ToListAsync();
+        var belongs = bool.TryParse(Request.Query["my"], out _) && User.IsInRole("Student");
+        var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var filter = Builders<Internship>.Filter.Where(i =>
+            i.IsActive && (!belongs || i.InternshipRequests.Select(r => r.StudentId).Contains(id)));
+        var internships = await collection.Find(filter).ToListAsync();
         return View(new FilterInternshipsRequest { Internships = internships });
     }
 

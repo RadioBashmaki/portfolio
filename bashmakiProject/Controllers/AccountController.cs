@@ -129,7 +129,10 @@ public class AccountController : Controller
     {
         var claims = new List<Claim>
         {
+            new(ClaimTypes.NameIdentifier, user.Id),
             new(ClaimTypes.Email, user.Email),
+            new(ClaimTypes.Name, user.PersonalData.Name ?? ""),
+            new(ClaimTypes.Surname, user.PersonalData.Surname ?? ""),
             new(ClaimTypes.Role, user.Role.ToString()!)
         };
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
