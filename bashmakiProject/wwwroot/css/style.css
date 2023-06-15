@@ -1443,6 +1443,15 @@ header {
     height: 25px;
 }
 
+.representative-wall-internships-container__title-container__add-link{
+    color: #4B4A7F;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    text-decoration: underline #4B4A7F dashed;
+    text-underline-offset: 3px;
+}
+
 /* main page styles */
 .main-page-bg {
     background: #D9D9D9;

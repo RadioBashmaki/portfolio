@@ -33,8 +33,14 @@
                 </div>
                 <div class="col-7">
                     <div class="representative-wall-internships-container">
-                        <div class="representative-wall-internships-container__title-container d-flex justify-content-between">
-                            <span class="representative-wall-internships-container__title-container__title">Стажировки</span>
+                        <div class="representative-wall-internships-container__title-container d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <span class="representative-wall-internships-container__title-container__title">Стажировки</span>
+                                @if ((bool)ViewData["ownPage"]!)
+                                {
+                                    <a asp-action="CreateInternship" asp-controller="Internships" class="representative-wall-internships-container__title-container__add-link ms-3 d-inline">Добавить</a>
+                                }
+                            </div>
                             <span class="representative-wall-internships-container__title-container__internships-count">Найдено: <span id="filtered-items-count">@Model.FilterInternshipsRequest.Internships.Count</span></span>
                         </div>
                         <div class="representative-wall-internships-container__search-bar">
