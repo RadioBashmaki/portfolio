@@ -13,13 +13,20 @@
                         <div class="d-flex align-items-center justify-content-between">
                             <span class="create-project-form__title primary-text">Редактировать стажировку</span>
                             <div class="d-flex align-items-center">
-                                <input class="internship-is-active" type="checkbox" asp-for="IsActive" checked="@(Model?.IsActive ?? true)">
+                                <input class="internship-is-active" type="checkbox" asp-for="IsActive" checked="@(Model.IsActive)">
                                 <label asp-for="IsActive">Активна</label>
                             </div>
                         </div>
                         <hr class="form-divider">
                         <input type="text" class="form-control create-project-form__title-input w-50" asp-for="Title" placeholder="Название">
                         <span asp-validation-for="Title"></span>
+                        <div class="create-internship__exp-radio-container">
+                            <div class="default-label mb-2">Опыт</div>
+                            <input class="custom-radio" type="radio" asp-for="Experience" id="demanded" value="@Experience.Demanded">
+                            <label for="demanded" class="me-4">Требуется</label>
+                            <input class="custom-radio" type="radio" asp-for="Experience" id="not-demanded" value="@Experience.NotDemanded">
+                            <label for="not-demanded">Не требуется</label>
+                        </div>
                         <div class="create-project-form__topic-container">
                             <div class="create-project-form__topics-label">
                                 <span class="open-topic-dropdown">Тематика</span>

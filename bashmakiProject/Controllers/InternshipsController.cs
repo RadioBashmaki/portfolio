@@ -100,7 +100,9 @@ public class InternshipsController : Controller
             Title = currentInternship.Title,
             Description = currentInternship.Description,
             FilesDescriptions = files.ToArray(),
-            Topics = Enum.GetValues<Topic>().ToDictionary(x => x, y => currentInternship.Topics.Contains(y))
+            Topics = Enum.GetValues<Topic>().ToDictionary(x => x, y => currentInternship.Topics.Contains(y)),
+            IsActive = currentInternship.IsActive,
+            Experience = currentInternship.Experience,
         };
 
         return View(edit);
@@ -136,6 +138,7 @@ public class InternshipsController : Controller
         currentInternship.Description = editRequest.Description;
         currentInternship.Topics = editRequest.Topics.Keys.Where(key => editRequest.Topics[key]).ToArray();
         currentInternship.IsActive = editRequest.IsActive;
+        currentInternship.Experience = editRequest.Experience;
         if (editRequest.FilesDescriptions == null || editRequest.FilesDescriptions.Length == 0 ||
             editedFiles == null || editedFiles.Count == 0)
             currentInternship.Files = null;
