@@ -18,6 +18,20 @@
             @if (User.Identity is {IsAuthenticated: true })
             {
                 <div class="col-3 d-flex align-items-center justify-content-end">
+                    <div class="custom-dropdown notifications-dropdown">
+                        <div id="query-notifications-btn" data-notifications-url="@Url.Action("Notifications", "Notifications")" class="custom-dropdown__visible notifications-dropdown__visible">
+                            <img src="~/img/svg/notifications-icon.svg" alt>
+                        </div>
+                        <div class="custom-dropdown__invisible notifications-dropdown__invisible">
+                            <img src="~/img/svg/notifications-icon-green.svg" alt>
+                            <div class="divider-thin mx-auto w-75 my-3"></div>
+                            <div id="notifications-container" class="notifications-dropdown__invisible__notifications">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3 d-flex align-items-center justify-content-end">
                     <div class="custom-dropdown personal-data-dropdown">
                         <div class="custom-dropdown__visible personal-data-dropdown__visible">
                             <div class="personal-data-dropdown__visible__content d-flex align-items-center justify-content-end">
@@ -51,11 +65,11 @@
                                 </a>
                             }
                             <a asp-action="AllStudents" asp-controller="Home" class="personal-data-dropdown__invisible__link d-flex align-items-center">
-                                <span class="me-auto">Все стажировки</span>
+                                <span class="me-auto">Все стажёры</span>
                                 <img src="~/img/svg/arrow-right.svg" alt>
                             </a>
                             <a asp-action="AllInternships" asp-controller="Home" class="personal-data-dropdown__invisible__link d-flex align-items-center">
-                                <span class="me-auto">Все представители</span>
+                                <span class="me-auto">Все стажировки</span>
                                 <img src="~/img/svg/arrow-right.svg" alt>
                             </a>
                         </div>

@@ -25,6 +25,7 @@ BsonSerializer.RegisterSerializer(new EnumSerializer<Gender>(BsonType.String));
 BsonSerializer.RegisterSerializer(new EnumSerializer<Topic>(BsonType.String));
 BsonSerializer.RegisterSerializer(new EnumSerializer<Experience>(BsonType.String));
 BsonSerializer.RegisterSerializer(new EnumSerializer<InternshipRequestStatus>(BsonType.String));
+BsonSerializer.RegisterSerializer(new EnumSerializer<NotificationType>(BsonType.String));
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(opts =>

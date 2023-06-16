@@ -4,6 +4,7 @@ using bashmakiProject.mongodb;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 
 namespace bashmakiProject.Controllers;
 
@@ -128,10 +129,21 @@ public class HomeController : Controller
         var requests = internship.InternshipRequests.ToList();
         if (requests.Select(r => r.StudentId).Contains(request.StudentId))
             return Forbid();
-        requests.Add(request);
-        var update = Builders<Internship>.Update.Set(i => i.InternshipRequests, requests.ToArray());
+        var update = Builders<Internship>.Update.Push(i => i.InternshipRequests, request);
         await collection.UpdateOneAsync(filter, update);
         return RedirectToAction("Wall", new { id = internship.UserId });
+    }
+
+    [HttpPost("internships/editRequest")]
+    [Authorize(Policy = "OnlyForRepresentatives")]
+    public async Task<IActionResult> EditInternshipRequest([Bind("StudentId", "Status", "InternshipId")]InternshipRequest editRequest)
+    {
+        var internshipsCollection = _repository.GetCollection<Internship>();
+        var filter = Builders<Internship>.Filter.Eq(i => i.Id, editRequest.InternshipId) &
+                     Builders<Internship>.Filter.ElemMatch(i => i.InternshipRequests, r => r.StudentId == editRequest.StudentId);
+        var update = Builders<Internship>.Update.Set(i => i.InternshipRequests.FirstMatchingElement().Status, editRequest.Status);
+        await internshipsCollection.UpdateOneAsync(filter, update);
+        return Json(true);
     }
     
     [Authorize]

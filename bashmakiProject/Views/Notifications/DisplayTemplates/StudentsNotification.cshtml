@@ -1,0 +1,20 @@
+﻿@model Notification
+
+@{
+    var title = Model.Type == NotificationType.InternshipRequestAccepted ?
+        "Ваш запрос на стажировку был принят!" : Model.Type == NotificationType.InternshipRequestDeclined ?
+            "Ваш запрос на стажировку был отклонён." : "";
+}
+
+
+<div class="notification">
+    <div class="notification__title d-flex w-100 align-items-center mb-2 justify-content-between">
+        <span>@title</span>
+        <span class="notification__time">@Model.CreationDate.ToString("dd-MM-yyyy, hh:mm")</span>
+    </div>
+    <div class="notification__body">
+        <span>
+            <a asp-action="Wall" asp-controller="Home" asp-route-id="@Model.FromWhomId">Представитель</a> @(Model.Type == NotificationType.InternshipRequestAccepted ? "принял" : "отклонил") ваш запрос на <a asp-action="RepresentInternship" asp-controller="Home" asp-route-id="@Model.InternshipId">стажировку</a>. @(Model.Type == NotificationType.InternshipRequestAccepted ? "Ожидайте обратной связи!" : "")
+        </span>
+    </div>
+</div>

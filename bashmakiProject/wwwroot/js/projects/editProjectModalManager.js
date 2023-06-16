@@ -1,5 +1,5 @@
 ﻿const $form = $("form");
-const $btn = $(".more-files-btn");
+const $moreFilesBtn = $(".more-files-btn");
 const $newFilesCont = $(".file-forms-container");
 
 
@@ -25,7 +25,7 @@ $(document).ready(function(){
 })
 
 
-$btn.click(function() {
+$moreFilesBtn.click(function() {
     $.ajax({
         async: true,
         type: "POST",

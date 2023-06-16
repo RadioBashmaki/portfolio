@@ -1,0 +1,6 @@
+﻿@model List<Notification>
+
+@foreach (var n in Model)
+{
+    @Html.DisplayFor(model => n, n.ToWhomRole == Role.Representative ? "RepresentativesNotification" : "StudentsNotification")
+}

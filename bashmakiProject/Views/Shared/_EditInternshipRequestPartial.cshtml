@@ -1,0 +1,7 @@
+﻿@model InternshipRequest
+
+<form class="edit-request-form" asp-action="EditInternshipRequest" asp-controller="Home">
+    <input type="hidden" asp-for="InternshipId" name="InternshipId" id="">
+    <input type="hidden" asp-for="StudentId" name="StudentId" id="">
+    <input class="request-status-input" type="hidden" asp-for="Status" name="Status" id="">
+</form>

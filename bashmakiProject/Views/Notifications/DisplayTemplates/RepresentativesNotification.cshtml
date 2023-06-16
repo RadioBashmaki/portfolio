@@ -1,0 +1,39 @@
+﻿@model Notification
+
+@{
+    var notification = new Notification
+    {
+        Id = Model.Id,
+        FromWhomId = Model.ToWhomId,
+        ToWhomId = Model.FromWhomId,
+        FromWhomRole = Role.Representative,
+        ToWhomRole = Role.Student,
+        InternshipId = Model.InternshipId,
+    };
+    var internshipRequest = new InternshipRequest
+    {
+        StudentId = Model.FromWhomId,
+        InternshipId = Model.InternshipId,
+    };
+}
+
+<div class="notification notification-representative">
+    <div class="notification__title d-flex w-100 align-items-center mb-2 justify-content-between">
+        <span>Вы получили запрос на стажировку!</span>
+        <span class="notification__time">@Model.CreationDate.ToString("dd-MM-yyyy, hh:mm")</span>
+    </div>
+    <div class="notification__body mb-2">
+        <span>
+            <a asp-action="Wall" asp-controller="Home" asp-route-id="@Model.FromWhomId">Студент</a> откликнутлся на вашу <a asp-action="RepresentInternship" asp-controller="Home" asp-route-id="@Model.InternshipId">стажировку</a>. Отклоните или примите её!
+        </span>
+    </div>
+    <div class="notification__buttons d-flex w-100 justify-content-between align-items-center px-2">
+        <button class="notification__buttons__accept-button notification-button" data-notification-type="@NotificationType.InternshipRequestAccepted" data-request-status="@InternshipRequestStatus.Accepted">Принять</button>
+        <button class="notification__buttons__decline-button notification-button" data-notification-type="@NotificationType.InternshipRequestDeclined" data-request-status="@InternshipRequestStatus.Declined">Отклонить</button>
+        @{
+            await Html.RenderPartialAsync("_CreateNotificationPartial", notification);
+            await Html.RenderPartialAsync("_EditInternshipRequestPartial", internshipRequest);
+        }
+    </div>
+</div>
+

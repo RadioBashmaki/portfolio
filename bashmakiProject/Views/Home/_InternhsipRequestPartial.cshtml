@@ -1,13 +1,29 @@
-﻿@model InternshipRequest
+﻿@inject IMongoDbRepository Repo
+@using bashmakiProject.mongodb
+@using MongoDB.Driver
+@model InternshipRequest
 
 @{
     var exists = ((InternshipRequest[])ViewData["existingRequests"]!)
         .Select(r => r.StudentId)
         .Contains(Model.StudentId);
+    var internship = await Repo.GetCollection<Internship>().Find(i => i.Id == Model.InternshipId).FirstOrDefaultAsync();
 }
 
 <form asp-action="CreateInternshipRequest" method="post">
     <input type="hidden" asp-for="StudentId">
     <input type="hidden" asp-for="InternshipId">
-    <button class="button create-project-form__save-btn ms-auto mt-4" @(exists ? "disabled" : "")>Оставить отклик</button>
+    <button id="send-notification-btn" class="button create-project-form__save-btn ms-auto mt-4" @(exists ? "disabled" : "")>Оставить отклик</button>
 </form>
+
+@{
+    await Html.RenderPartialAsync("_CreateNotificationPartial", new Notification
+    {
+        FromWhomId = Model.StudentId,
+        ToWhomId = internship.UserId,
+        FromWhomRole = Role.Student,
+        ToWhomRole = Role.Representative,
+        InternshipId = Model.InternshipId,
+        Type = NotificationType.InternshipRequestCreated,
+    });
+}

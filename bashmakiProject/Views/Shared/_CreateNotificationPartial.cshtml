@@ -1,0 +1,10 @@
+﻿@model Notification
+
+<form class="send-notification-form" data-delete-notification-id="@Model.Id" asp-action="CreateNotification" asp-controller="Notifications">
+    <input type="hidden" asp-for="FromWhomId" name="FromWhomId" id="">
+    <input type="hidden" asp-for="ToWhomId" name="ToWhomId" id="">
+    <input type="hidden" asp-for="FromWhomRole" name="FromWhomRole" id="">
+    <input type="hidden" asp-for="ToWhomRole" name="ToWhomRole" id="">
+    <input type="hidden" asp-for="InternshipId" name="InternshipId" id="">
+    <input class="notification-type-input" type="hidden" asp-for="Type" name="Type" id="">
+</form>
